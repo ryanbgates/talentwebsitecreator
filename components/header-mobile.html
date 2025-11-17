@@ -1,0 +1,43 @@
+<!-- Mobile Header Component -->
+<header class="header" id="globalHeader">
+    <div class="header-container">
+        <!-- Logo container with transformation capabilities -->
+        <div class="logo-container" id="logoContainer">
+            <!-- Full logo (default state) -->
+            <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator" class="logo logo-full" id="logoFull">
+            
+            <!-- Icon logo (let CSS handle the display) -->
+            <img src="../assets/images/twc-icon-logo.jpg" alt="TWC" class="logo logo-icon" id="logoIcon">
+        </div>
+        
+        <!-- Navigation container (hidden by default, shows on transformation) -->
+        <nav class="header-nav" id="headerNav" style="display: none;">
+            <a href="#" class="nav-item" onclick="viewSamples(); return false;">Website<br>Samples</a>
+            <a href="#" class="nav-item" onclick="viewPricing(); return false;">Plans</a>
+            <a href="#" class="nav-item" onclick="affiliateProgram(); return false;">Referral<br>Program</a>
+            <a href="#" class="nav-item nav-auth" onclick="loginAccount(); return false;" id="authNavButton">Login/<br>Register</a>
+        </nav>
+        
+        <!-- User menu (shows when logged in) -->
+        <div class="user-menu" id="userMenu" style="display: none;">
+            <div class="user-dropdown">
+                <button class="user-toggle" id="userToggle">
+                    <div class="user-avatar">
+                        <span class="user-initial">U</span>
+                    </div>
+                    <span class="user-name">User Name</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <a href="#" class="user-menu-item" onclick="goToDashboard(); return false;">Dashboard</a>
+                    <a href="#" class="user-menu-item" onclick="goToMyWebsites(); return false;">My Websites</a>
+                    <a href="#" class="user-menu-item">Account Settings</a>
+                    <a href="#" class="user-menu-item">Billing</a>
+                    <div class="user-menu-divider"></div>
+                    <a href="#" class="user-menu-item" onclick="logoutUser(); return false;">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

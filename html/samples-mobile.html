@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Website Samples - Talent Website Creator</title>
+    
+    <!-- Removed video preloading to prevent loading slowness -->
+    
+    <link rel="stylesheet" href="../css/samples-mobile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" style="opacity: 0;">
+        <main class="main-content">
+            <section class="samples-showcase">
+                <div class="container">
+                    <!-- Page Carousel -->
+                    <div class="page-carousel">
+                        <!-- Slide 1: Home Page -->
+                        <div class="carousel-slide active" id="slide1">
+                            <h2 class="slide-title">
+                                <div class="title-container">
+                                    <button class="carousel-arrow left-arrow" id="prevSlide1" style="display: none;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15,18 9,12 15,6"></polyline>
+                                        </svg>
+                                    </button>
+                                    
+                                    <span>Your Custom Home Page</span>
+                                    
+                                    <button class="carousel-arrow right-arrow" id="nextSlide1">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9,6 15,12 9,18"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </h2>
+                            
+                            <!-- Page Indicators -->
+                            <div class="page-indicators">
+                                <span class="indicator active" data-slide="1"></span>
+                                <span class="indicator" data-slide="2"></span>
+                                <span class="indicator" data-slide="3"></span>
+                                <span class="indicator" data-slide="4"></span>
+                                <span class="indicator" data-slide="5"></span>
+                            </div>
+                            
+                            <p class="slide-description">
+                                Casting directors and industry professionals will first encounter your home page - a central hub with navigation to your "About" page, work credits, demo reel, and photo gallery. Front and center, you'll find your <strong><u>Headshots</u></strong> capturing attention and giving casting directors instant access to your look and range. Click "Contact" and your <strong><u>Contact Card</u></strong> appears instantly, while clicking your <strong><u>Resume</u></strong> button immediately downloads your resume—both without leaving this page. At the top and bottom of the page, you'll find <strong><u>Dynamic Photo Galleries</u></strong> that slowly scroll through your images and stills from your projects. Industry professionals can click the <strong><u>Social Media Bubbles</u></strong> for direct access to your Instagram, IMDb, and other profiles.
+                            </p>
+                            
+                            <!-- Home Page Video Content -->
+                            <div class="video-tabs">
+                                <button class="tab-button active" data-tab="desktop">Desktop Version</button>
+                                <button class="tab-button" data-tab="mobile">Mobile Version</button>
+                                <div class="tab-arrows-overlay">⇄</div>
+                            </div>
+                            
+                            <p class="version-note">Both versions are included with your website</p>
+                            
+                            <div class="video-content">
+                                <!-- Desktop Video -->
+                                <div class="video-item active" data-content="desktop">
+                                    <div class="sample-video-container desktop">
+                                        <video 
+                                            class="sample-video" 
+                                            muted 
+                                            loop 
+                                            playsinline
+                                            preload="none"
+                                            data-src="../sample-videos/sample-smallvideo-R-PC.mp4">
+                                            <!-- Video source will be added dynamically when needed -->
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                    
+                                    <!-- Second Desktop Video (stacked below) -->
+                                    <div class="sample-video-container desktop" style="margin-top: 20px;">
+                                        <video 
+                                            class="sample-video" 
+                                            muted 
+                                            loop 
+                                            playsinline
+                                            preload="none"
+                                            data-src="../sample-videos/sample-smallvideo-M-PC.mp4">
+                                            <!-- Video source will be added dynamically when needed -->
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mobile Video -->
+                                <div class="video-item" data-content="mobile">
+                                    <div class="mobile-videos-row">
+                                        <!-- First Mobile Video (left) -->
+                                        <div class="sample-video-container mobile">
+                                            <video 
+                                                class="sample-video" 
+                                                muted 
+                                                loop 
+                                                playsinline>
+                                                <source src="../sample-videos/sample-smallvideo-R-mobile.mp4" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                        
+                                        <!-- Second Mobile Video (right) -->
+                                        <div class="sample-video-container mobile">
+                                            <video 
+                                                class="sample-video" 
+                                                muted 
+                                                loop 
+                                                playsinline>
+                                                <source src="../sample-videos/sample-smallvideo-M-mobile.mp4" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Help Text -->
+                            <p class="samples-help-text">Need Help? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                        </div>
+                        
+                        <!-- Slide 2: Biography Page -->
+                        <div class="carousel-slide" id="slide2">
+                            <h2 class="slide-title">
+                                <div class="title-container">
+                                    <button class="carousel-arrow left-arrow" id="prevSlide2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15,18 9,12 15,6"></polyline>
+                                        </svg>
+                                    </button>
+                                    
+                                    <span>Your Biography Page</span>
+                                    
+                                    <button class="carousel-arrow right-arrow" id="nextSlide2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9,6 15,12 9,18"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </h2>
+                            
+                            <!-- Page Indicators -->
+                            <div class="page-indicators">
+                                <span class="indicator" data-slide="1"></span>
+                                <span class="indicator active" data-slide="2"></span>
+                                <span class="indicator" data-slide="3"></span>
+                                <span class="indicator" data-slide="4"></span>
+                                <span class="indicator" data-slide="5"></span>
+                            </div>
+                            
+                            <p class="slide-description">
+                                Your Biography page presents your professional story with impact. A polished headshot introduces visitors to your talent, while your physical statistics (height, weight, hair, eyes, age, and playing range) are prominently displayed for casting professionals. Below, your personal journey unfolds—from early inspirations and training to career milestones and notable projects—<strong><u>giving industry professionals the complete picture of who you are</u></strong> as an artist.
+                            </p>
+                            
+                            <!-- Biography Page Content -->
+                            <div class="video-tabs">
+                                <button class="tab-button active" data-tab="desktop">Desktop Version</button>
+                                <button class="tab-button" data-tab="mobile">Mobile Version</button>
+                                <div class="tab-arrows-overlay">⇄</div>
+                            </div>
+                            
+                            <p class="version-note">Both versions are included with your website</p>
+                            
+                            <div class="video-content">
+                                <!-- Desktop Images -->
+                                <div class="video-item active" data-content="desktop">
+                                    <div class="desktop-videos-row">
+                                        <!-- First Desktop Image (top) -->
+                                        <div class="sample-video-container desktop">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-about-R-PC.jpg"
+                                                alt="Desktop About Page - Ryan Gates"
+                                                loading="lazy">
+                                        </div>
+                                        
+                                        <!-- Second Desktop Image (bottom) -->
+                                        <div class="sample-video-container desktop">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-about-M-PC.jpg"
+                                                alt="Desktop About Page - Mickeal Treeland"
+                                                loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mobile Images -->
+                                <div class="video-item" data-content="mobile">
+                                    <div class="mobile-videos-row">
+                                        <!-- First Mobile Image (left) -->
+                                        <div class="sample-video-container mobile">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-about-R-mobile.jpg"
+                                                alt="Mobile About Page - Ryan Gates"
+                                                loading="lazy">
+                                        </div>
+                                        
+                                        <!-- Second Mobile Image (right) -->
+                                        <div class="sample-video-container mobile">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-about-M-mobile-.jpg"
+                                                alt="Mobile About Page - Mickeal Treeland"
+                                                loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Help Text -->
+                            <p class="samples-help-text">Need Help? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                        </div>
+                        
+                        <!-- Slide 3: Credit/Work Page -->
+                        <div class="carousel-slide" id="slide3">
+                            <h2 class="slide-title">
+                                <div class="title-container">
+                                    <button class="carousel-arrow left-arrow" id="prevSlide3">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15,18 9,12 15,6"></polyline>
+                                        </svg>
+                                    </button>
+                                    
+                                    <span>Your Custom Credit/Work Page</span>
+                                    
+                                    <button class="carousel-arrow right-arrow" id="nextSlide3">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9,6 15,12 9,18"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </h2>
+                            
+                            <!-- Page Indicators -->
+                            <div class="page-indicators">
+                                <span class="indicator" data-slide="1"></span>
+                                <span class="indicator" data-slide="2"></span>
+                                <span class="indicator active" data-slide="3"></span>
+                                <span class="indicator" data-slide="4"></span>
+                                <span class="indicator" data-slide="5"></span>
+                            </div>
+                            
+                            <p class="slide-description">
+                                Your Credits page brings your resume to life with animated visual elements. Project listings display each project name with your role, while <strong><u>still shots from your work continuously swap in and out as visitors scroll</u></strong>—showcasing your range of characters and looks. Your resume also <strong><u>highlights your training and education, along with your special skills</u></strong>, keeping industry professionals engaged as they explore your complete professional profile.
+                            </p>
+                            
+                            <!-- Credits Page Content -->
+                            <div class="video-tabs">
+                                <button class="tab-button active" data-tab="desktop">Desktop Version</button>
+                                <button class="tab-button" data-tab="mobile">Mobile Version</button>
+                                <div class="tab-arrows-overlay">⇄</div>
+                            </div>
+                            
+                            <p class="version-note">Both versions are included with your website</p>
+                            
+                            <div class="video-content">
+                                <!-- Desktop Videos (Mobile-Optimized) -->
+                                <div class="video-item active" data-content="desktop">
+                                    <div class="desktop-videos-row">
+                                        <!-- First Desktop Video (top) -->
+                                        <div class="sample-video-container desktop">
+                                            <video 
+                                                class="sample-video" 
+                                                muted 
+                                                loop 
+                                                playsinline
+                                                preload="none"
+                                                poster="">
+                                                <source src="../sample-videos/sample-credit-R-PC-mobileoptimized.mp4" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                        
+                                        <!-- Second Desktop Video (bottom) -->
+                                        <div class="sample-video-container desktop">
+                                            <video 
+                                                class="sample-video" 
+                                                muted 
+                                                loop 
+                                                playsinline
+                                                preload="none"
+                                                poster="">
+                                                <source src="../sample-videos/sample-credit-M-PC-mobileoptimized.mp4" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mobile Images -->
+                                <div class="video-item" data-content="mobile">
+                                    <div class="mobile-videos-row">
+                                        <!-- First Mobile Image (left) -->
+                                        <div class="sample-video-container mobile">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-creditphoto-R-mobile.jpg"
+                                                alt="Mobile Credit Page - Ryan Gates"
+                                                loading="lazy">
+                                        </div>
+                                        
+                                        <!-- Second Mobile Image (right) -->
+                                        <div class="sample-video-container mobile">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-creditphoto-M-mobile.jpg"
+                                                alt="Mobile Credit Page - Mickeal Treeland"
+                                                loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Help Text -->
+                            <p class="samples-help-text">Need Help? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                        </div>
+
+                        <!-- Slide 4: Demo Reel Page -->
+                        <div class="carousel-slide" id="slide4">
+                            <h2 class="slide-title">
+                                <div class="title-container">
+                                    <button class="carousel-arrow left-arrow" id="prevSlide4">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15,18 9,12 15,6"></polyline>
+                                        </svg>
+                                    </button>
+                                    
+                                    <span>Your Demo Reel Page</span>
+                                    
+                                    <button class="carousel-arrow right-arrow" id="nextSlide4">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9,6 15,12 9,18"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </h2>
+                            
+                            <!-- Page Indicators -->
+                            <div class="page-indicators">
+                                <span class="indicator" data-slide="1"></span>
+                                <span class="indicator" data-slide="2"></span>
+                                <span class="indicator" data-slide="3"></span>
+                                <span class="indicator active" data-slide="4"></span>
+                                <span class="indicator" data-slide="5"></span>
+                            </div>
+                            
+                            <p class="slide-description">
+                                Your Demo Reel page <strong><u>displays your reel streamed directly from your own YouTube channel</u></strong> or preferred video platform, making it easy for visitors to <strong><u>watch and share your work with casting directors</u></strong> and industry contacts.
+                            </p>
+                            
+                            <!-- Demo Reel Page Content -->
+                            <div class="video-tabs">
+                                <button class="tab-button active" data-tab="desktop">Desktop Version</button>
+                                <button class="tab-button" data-tab="mobile">Mobile Version</button>
+                                <div class="tab-arrows-overlay">⇄</div>
+                            </div>
+                            
+                            <p class="version-note">Both versions are included with your website</p>
+                            
+                            <div class="video-content">
+                                <!-- Desktop Images -->
+                                <div class="video-item active" data-content="desktop">
+                                    <div class="desktop-videos-row">
+                                        <!-- First Desktop Image (top) -->
+                                        <div class="sample-video-container desktop">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-reel-R-PC.jpg"
+                                                alt="Desktop Demo Reel Page - Ryan Gates"
+                                                loading="lazy">
+                                        </div>
+                                        
+                                        <!-- Second Desktop Image (bottom) -->
+                                        <div class="sample-video-container desktop">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-reel-M-PC.jpg"
+                                                alt="Desktop Demo Reel Page - Mickeal Treeland"
+                                                loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mobile Images -->
+                                <div class="video-item" data-content="mobile">
+                                    <div class="mobile-videos-row">
+                                        <!-- First Mobile Image (left) -->
+                                        <div class="sample-video-container mobile">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-reel-R-mobile.jpg"
+                                                alt="Mobile Demo Reel Page - Ryan Gates"
+                                                loading="lazy">
+                                        </div>
+                                        
+                                        <!-- Second Mobile Image (right) -->
+                                        <div class="sample-video-container mobile">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-reel-M-mobile.jpg"
+                                                alt="Mobile Demo Reel Page - Mickeal Treeland"
+                                                loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Help Text -->
+                            <p class="samples-help-text">Need Help? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                        </div>
+
+                        <!-- Slide 5: Custom Photos Page -->
+                        <div class="carousel-slide" id="slide5">
+                            <h2 class="slide-title">
+                                <div class="title-container">
+                                    <button class="carousel-arrow left-arrow" id="prevSlide5">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15,18 9,12 15,6"></polyline>
+                                        </svg>
+                                    </button>
+                                    
+                                    <span>Your Custom Photos Page</span>
+                                    
+                                    <button class="carousel-arrow right-arrow" id="nextSlide5" style="display: none;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9,6 15,12 9,18"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </h2>
+                            
+                            <!-- Page Indicators -->
+                            <div class="page-indicators">
+                                <span class="indicator" data-slide="1"></span>
+                                <span class="indicator" data-slide="2"></span>
+                                <span class="indicator" data-slide="3"></span>
+                                <span class="indicator" data-slide="4"></span>
+                                <span class="indicator active" data-slide="5"></span>
+                            </div>
+                            
+                            <p class="slide-description">
+                                Your Custom Photos page displays a curated collection of your professional photography. <strong><u>Visitors can explore film still shots, behind-the-scenes photos, commercial photographs</u></strong>, and any other images you choose to showcase. All photos are organized into designated categories—Drama, Action, Comedy, and Commercial—<strong><u>making it easy for industry professionals to view your range and versatility across different genres</u></strong>.
+                            </p>
+                            
+                            <!-- Photos Page Content -->
+                            <div class="video-tabs">
+                                <button class="tab-button active" data-tab="desktop">Desktop Version</button>
+                                <button class="tab-button" data-tab="mobile">Mobile Version</button>
+                                <div class="tab-arrows-overlay">⇄</div>
+                            </div>
+                            
+                            <p class="version-note">Both versions are included with your website</p>
+                            
+                            <div class="video-content">
+                                <!-- Desktop Images -->
+                                <div class="video-item active" data-content="desktop">
+                                    <div class="desktop-videos-row">
+                                        <!-- First Desktop Image (top) -->
+                                        <div class="sample-video-container desktop">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-photos-R-PC.jpg"
+                                                alt="Desktop Photos Page - Ryan Gates"
+                                                loading="lazy">
+                                        </div>
+                                        
+                                        <!-- Second Desktop Image (bottom) -->
+                                        <div class="sample-video-container desktop">
+                                            <img 
+                                                class="sample-video" 
+                                                src="../sample-videos/sample-photos-M-PC.jpg"
+                                                alt="Desktop Photos Page - Mickeal Treeland"
+                                                loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mobile Videos (Mobile-Optimized) -->
+                                <div class="video-item" data-content="mobile">
+                                    <div class="mobile-videos-row">
+                                        <!-- First Mobile Video (left) -->
+                                        <div class="sample-video-container mobile">
+                                            <video 
+                                                class="sample-video" 
+                                                muted 
+                                                loop 
+                                                playsinline
+                                                poster="">
+                                                <source src="../sample-videos/sample-photos-R-mobileoptimized.mp4" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                        
+                                        <!-- Second Mobile Video (right) -->
+                                        <div class="sample-video-container mobile">
+                                            <video 
+                                                class="sample-video" 
+                                                muted 
+                                                loop 
+                                                playsinline
+                                                poster="">
+                                                <source src="../sample-videos/sample-photos-M-mobileoptimized.mp4" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Help Text -->
+                            <p class="samples-help-text">Need Help? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+    
+    <!-- Project Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../components/contact-loader.js"></script>
+    <script src="../js/landing.js"></script>
+    <script src="../js/samples.js"></script>
+    
+    <!-- Mobile videos are now managed by the unified samples.js system -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('� Mobile samples page loaded - using unified video management');
+        });
+    </script>
+</body>
+</html>

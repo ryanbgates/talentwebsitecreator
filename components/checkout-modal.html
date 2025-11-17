@@ -1,0 +1,166 @@
+<div class="checkout-modal-overlay" id="checkoutModal">
+    <div class="checkout-modal">
+        <button class="checkout-close" onclick="window.checkoutModal.hide()">&times;</button>
+        
+        <div class="checkout-header">
+            <h2>Order Summary</h2>
+        </div>
+
+        <div class="checkout-content">
+            <!-- Order Summary -->
+            <div class="checkout-summary">
+                <div class="summary-item" id="depositItem" style="display: none;">
+                    <div class="deposit-label">
+                        <span>Website Build Deposit</span>
+                        <span class="deposit-subtext">(non-refundable)</span>
+                    </div>
+                    <div class="summary-price-container">
+                        <span class="summary-price">$99.99</span>
+                        <div class="summary-subitem" id="finalPaymentNote" style="display: block;">
+                            <div style="display: flex; align-items: baseline; gap: 4px;">
+                                <span>then</span>
+                                <span id="finalPaymentAmount" class="final-payment-amount">$299.99</span>
+                                <span>when satisfied</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-item" id="finalPaymentItem" style="display: none;">
+                    <span>Website Build Final Payment</span>
+                    <div class="final-payment-price-wrapper">
+                        <span class="summary-price" id="finalPaymentPrice">$299.99</span>
+                    </div>
+                </div>
+                <div class="summary-item" id="hostingItem" style="display: none;">
+                    <span>Server Hosting</span>
+                    <span class="summary-price">$9.99/month</span>
+                </div>
+                <div class="summary-item" id="updatesItem" style="display: none;">
+                    <span>Unlimited Edits</span>
+                    <span class="summary-price">$9.99/month</span>
+                </div>
+                <div class="summary-item" id="completeItem" style="display: none;">
+                    <span>Server Hosting + Unlimited Edits</span>
+                    <span class="summary-price">$14.99/month</span>
+                </div>
+                
+                <!-- Plan Selection -->
+                <div class="plan-selection" id="planSelection" style="display: none;">
+                    <label class="plan-selection-label">Select Service Plan:</label>
+                    <div class="plan-options">
+                        <label class="plan-option">
+                            <input type="radio" name="servicePlan" value="none" id="planNone">
+                            <span class="plan-option-content">
+                                <span class="plan-option-name">No Service</span>
+                                <span class="plan-option-price">$0/mo</span>
+                            </span>
+                        </label>
+                        <label class="plan-option">
+                            <input type="radio" name="servicePlan" value="hosting" id="planHosting">
+                            <span class="plan-option-content">
+                                <span class="plan-option-name">Server<br>Hosting</span>
+                                <span class="plan-option-price">$9.99/mo</span>
+                            </span>
+                        </label>
+                        <label class="plan-option">
+                            <input type="radio" name="servicePlan" value="updates" id="planUpdates">
+                            <span class="plan-option-content">
+                                <span class="plan-option-name">Unlimited<br>Edits</span>
+                                <span class="plan-option-price">$9.99/mo</span>
+                            </span>
+                        </label>
+                        <label class="plan-option">
+                            <input type="radio" name="servicePlan" value="complete" id="planComplete">
+                            <span class="plan-option-content">
+                                <span class="plan-option-name">Complete<br>Plan</span>
+                                <span class="plan-option-price">$14.99/mo</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="promo-code-section">
+                    <div class="promo-input-wrapper">
+                        <input 
+                            type="text" 
+                            id="promoCode" 
+                            placeholder="Enter promo code"
+                            class="promo-input"
+                        >
+                        <button class="promo-apply-btn" onclick="window.checkoutModal.applyPromoCode()">
+                            Apply
+                        </button>
+                    </div>
+                    <div class="promo-message" id="promoMessage"></div>
+                </div>
+
+                <div class="summary-divider"></div>
+                
+                <div class="summary-total">
+                    <h3>Total:</h3>
+                    <div class="summary-price-container">
+                        <span class="total-price" id="totalPrice">$0.00</span>
+                        <div class="summary-subitem" id="totalFinalPaymentNote" style="display: none;">
+                            <div style="display: flex; align-items: baseline; gap: 4px;">
+                                <span>then</span>
+                                <span id="totalFinalPaymentAmount" class="final-payment-amount">$299.99</span>
+                                <span>when satisfied</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Website Name Section -->
+            <div class="website-name-section">
+                <h3>Website Name</h3>
+                
+                <div class="form-group">
+                    <div class="website-name-wrapper">
+                        <span class="website-prefix">www.</span>
+                        <input 
+                            type="text" 
+                            id="websiteName" 
+                            class="website-name-input"
+                            placeholder="yourwebsitename"
+                            required
+                        >
+                        <span class="website-suffix">.com</span>
+                    </div>
+                    <small class="input-hint">Enter your desired website name (letters, numbers, and hyphens only)</small>
+                </div>
+            </div>
+
+            <!-- Payment Form -->
+            <div class="checkout-form">
+                <!-- Payment Information Section -->
+                <h3>Payment Information</h3>
+                
+                <!-- Stripe Card Element -->
+                <div class="form-group">
+                    <label>Card Information</label>
+                    <div id="card-element" class="stripe-element"></div>
+                    <div id="card-errors" class="payment-error"></div>
+                </div>
+
+                <div class="checkout-actions">
+                    <button class="checkout-btn cancel" onclick="window.checkoutModal.hide()">
+                        Cancel
+                    </button>
+                    <button class="checkout-btn primary" id="submitPayment" onclick="window.checkoutModal.processPayment()">
+                        <span class="btn-text">Pay Now</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="loader-dot"></span>
+                            <span class="loader-dot"></span>
+                            <span class="loader-dot"></span>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="checkout-footer">
+                    <p>Your payment information is secure and encrypted</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

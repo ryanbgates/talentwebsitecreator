@@ -1,0 +1,881 @@
+/* Website Samples Page Styles - Mobile */
+
+/* Loading Screen Styles */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-container {
+    text-align: center;
+    max-width: 300px;
+    padding: 1.5rem;
+}
+
+.loading-logo {
+    margin-bottom: 2.5rem;
+}
+
+.loading-logo img {
+    max-width: 220px;
+    height: auto;
+    opacity: 0.9;
+}
+
+.loading-animation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.scroll-dots {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    transition: all 0.3s ease;
+    animation: scrollDot 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.3s; }
+.dot:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes scrollDot {
+    0%, 80%, 100% {
+        background-color: var(--border-color);
+        transform: scale(1);
+    }
+    40% {
+        background-color: var(--primary-color);
+        transform: scale(1.3);
+    }
+}
+
+:root {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #f8f9fa;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #e0e0e0;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.25);
+    --header-height: 84px;
+    --vh: 1vh;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Prevent iOS bounce scrolling issues */
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    overflow-x: hidden;
+    /* Remove overflow-y constraint to allow natural scrolling */
+    /* Add smooth scrolling optimization for mobile */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--secondary-color);
+    overflow-x: hidden;
+    /* Remove fixed height constraint that causes scrolling issues */
+    min-height: 100vh;
+    /* Add mobile scroll optimizations */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+.main-wrapper {
+    margin-top: var(--header-height);
+    /* Allow content to expand naturally without height constraints */
+    min-height: calc(100vh - var(--header-height));
+    /* Remove any scroll interference */
+    overflow: visible;
+    transition: opacity 0.3s ease;
+}
+
+.main-content {
+    width: 100%;
+    /* Ensure main content can expand naturally */
+    position: relative;
+    /* Remove problematic scroll momentum that conflicts with native scrolling */
+    overflow: visible;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.page-hero {
+    padding: 40px 0 30px 0;
+    text-align: center;
+    background-color: var(--accent-color);
+    min-height: auto;
+    display: block;
+}
+
+.page-hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.page-hero p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 90%;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Landing Page Section Styles */
+.landing-section {
+    text-align: center;
+    margin-bottom: 40px; /* Smaller for mobile */
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 10px; /* Add padding for mobile */
+}
+
+.landing-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.8rem; /* Smaller for mobile */
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px; /* Smaller for mobile */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.landing-description {
+    font-size: 0.95rem; /* Smaller for mobile */
+    color: var(--text-secondary);
+    line-height: 1.5; /* Tighter for mobile */
+    margin: 0 auto;
+    text-align: center;
+    max-width: 95%; /* Allow more width on mobile */
+}
+
+.landing-description strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Samples Showcase Section */
+.samples-showcase {
+    padding: 5px 0 60px 0; /* Minimal top padding to bring title very close to header */
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-color) 100%);
+    background-image: 
+        radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0),
+        linear-gradient(45deg, rgba(0,0,0,0.012) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(0,0,0,0.012) 25%, transparent 25%);
+    background-size: 12px 12px, 24px 24px, 24px 24px;
+}
+
+.sample-content {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.sample-content h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.sample-content p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 90%;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Tab Navigation Styles */
+.video-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto 0.5rem auto; /* Reduced bottom margin */
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 4px;
+    max-width: 400px;
+    position: relative; /* Added for overlay positioning */
+    z-index: 1; /* Keep below header (header is z-index: 1000) */
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #333;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button.active {
+    background: #000;
+    color: #fff;
+}
+
+.tab-button:hover:not(.active) {
+    background: #e0e0e0;
+}
+
+.tab-arrows-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem; /* Slightly smaller for mobile */
+    pointer-events: none !important;
+    z-index: 1001;
+    width: 26px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.tab-arrows-overlay::before,
+.tab-arrows-overlay::after {
+    pointer-events: none !important;
+}
+
+/* Left half of arrows - white by default */
+.tab-arrows-overlay::before {
+    content: '⇄';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    transition: color 0.3s ease;
+}
+
+/* Right half of arrows - black by default */
+.tab-arrows-overlay::after {
+    content: '⇄';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    transition: color 0.3s ease;
+}
+
+/* When mobile is active, flip the colors */
+.video-tabs:has(.tab-button[data-tab="mobile"].active) .tab-arrows-overlay::before {
+    color: black;
+}
+
+.video-tabs:has(.tab-button[data-tab="mobile"].active) .tab-arrows-overlay::after {
+    color: white;
+}
+
+/* Fallback for browsers that don't support :has() - More reliable approach */
+.tab-arrows-overlay.tab-arrows-mobile-active::before {
+    color: black !important;
+}
+
+.tab-arrows-overlay.tab-arrows-mobile-active::after {
+    color: white !important;
+}
+
+/* Version Note Styles */
+.version-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #000; /* Hard black color */
+    margin: 0.5rem auto 0.75rem auto;
+    font-style: italic;
+    font-weight: bold; /* Make the message bold */
+}
+
+/* Video Content Styles */
+.video-content {
+    position: relative;
+    margin-top: 0;
+}
+
+.video-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.video-item {
+    text-align: center;
+    width: 100%;
+    display: none;
+}
+
+.video-item.active {
+    display: block;
+}
+
+.video-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sample-video-container {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-hover);
+    background-color: #f5f7fa;
+    margin: 0 auto;
+    min-height: 240px; /* Increased height for desktop video */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Visit Site Button */
+.visit-site-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: black;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+}
+
+/* Smaller button for mobile version containers */
+.sample-video-container.mobile .visit-site-btn {
+    font-size: 10px;
+    padding: 5px 12px;
+}
+
+.visit-site-btn:active {
+    background: rgba(255, 255, 255, 1);
+    transform: translateX(-50%) scale(0.95);
+}
+
+/* Mobile videos side-by-side layout */
+.mobile-videos-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Reduced gap for tighter fit */
+    flex-wrap: wrap;
+    padding: 0 10px; /* Add padding to prevent edge cutoff */
+}
+
+/* Desktop videos stacked layout for mobile */
+.desktop-videos-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.sample-video-container.desktop {
+    max-width: 95%;
+    width: 100%;
+    aspect-ratio: 16/9; /* Maintain desktop aspect ratio */
+}
+
+.sample-video-container.mobile {
+    max-width: 170px; /* Increased to fill more space */
+    width: calc(50% - 5px); /* Responsive width with gap consideration */
+    aspect-ratio: 9/16; /* Maintain proper mobile video aspect ratio */
+    min-height: auto; /* Let aspect ratio control height */
+}
+
+.sample-video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
+
+.video-fallback {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* Video Loading Overlay */
+.video-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+}
+
+.video-loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* New Loading State System */
+.video-loading-state {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+}
+
+.sample-video.hidden {
+    opacity: 0;
+    z-index: 5;
+}
+
+.sample-video.visible {
+    opacity: 1;
+    z-index: 15;
+    transition: opacity 0.5s ease;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.loading-text {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.loading-progress-bar {
+    width: 80%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .page-hero {
+        padding: 30px 0 25px 0;
+    }
+    
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .page-hero p {
+        font-size: 1rem;
+        max-width: 95%;
+    }
+    
+    .samples-showcase {
+        padding: 30px 0 40px 0;
+    }
+    
+    .landing-section {
+        margin-bottom: 30px; /* Smaller margin for small screens */
+        padding: 0 5px; /* Tighter padding */
+    }
+    
+    .landing-title {
+        font-size: 1.6rem; /* Even smaller for tiny screens */
+        margin-bottom: 12px;
+    }
+    
+    .landing-description {
+        font-size: 0.9rem; /* Smaller text */
+        line-height: 1.4; /* Tighter line height */
+        max-width: 98%; /* Almost full width */
+    }
+    
+    .sample-content {
+        margin-bottom: 30px;
+    }
+    
+    .sample-content h3 {
+        font-size: 1.6rem;
+    }
+    
+    .sample-content p {
+        font-size: 0.9rem;
+        max-width: 95%;
+    }
+    
+    .video-grid {
+        gap: 25px;
+    }
+    
+    .sample-video-container {
+        border-radius: 10px;
+        min-height: 200px; /* Restore closer to original 240px but slightly smaller for scrolling */
+    }
+    
+    .sample-video-container.mobile {
+        max-width: 150px; /* Increased for better space utilization */
+        width: calc(48% - 4px); /* Slightly wider responsive width */
+        /* Prevent layout jumping on iOS when switching tabs */
+        min-height: 200px;
+        max-height: 300px;
+    }
+    
+    .sample-video {
+        border-radius: 10px;
+        object-fit: cover; /* Same behavior for both videos and images */
+    }
+    
+    /* Biography mobile images - favor the top half of the photo */
+    .sample-video-container.mobile .sample-video[src*=".jpg"], 
+    .sample-video-container.mobile .sample-video[src*=".png"] {
+        object-position: center top; /* Position images to show top portion */
+    }
+    
+    .mobile-videos-row {
+        gap: 8px; /* Smaller gap for tiny screens */
+        padding: 0 5px;
+    }
+    
+    /* iOS Safari viewport fix for slide 4 - prevent layout jumping */
+    @supports (-webkit-touch-callout: none) {
+        #slide4 .sample-video-container {
+            min-height: 200px;
+            max-height: 300px;
+        }
+        
+        #slide4 .sample-video-container.desktop {
+            min-height: 220px;
+            max-height: 320px;
+            transition: height 0.3s ease;
+        }
+        
+        #slide4 .sample-video-container.mobile {
+            min-height: 180px;
+            max-height: 280px;
+            transition: height 0.3s ease;
+        }
+        
+        #slide4 .video-content {
+            min-height: 250px;
+        }
+        
+        #slide4 .desktop-videos-row,
+        #slide4 .mobile-videos-row {
+            min-height: 240px;
+        }
+    }
+    
+    .sample-video {
+        border-radius: 10px;
+    }
+    
+    .video-label {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+}
+
+/* iOS Safari viewport fix - More aggressive approach for tab switching */
+/* iOS Safari viewport fix - Simplified to prevent scroll conflicts */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Use -webkit-fill-available for better iOS support */
+        min-height: -webkit-fill-available;
+    }
+    
+    /* Remove all height constraints that interfere with scrolling */
+    .main-wrapper {
+        /* Let content expand naturally */
+        min-height: auto;
+    }
+    
+    .video-content {
+        /* Remove min-height that causes scroll issues */
+        min-height: auto;
+    }
+    
+    .video-item {
+        /* Smooth transitions without height constraints */
+        transition: opacity 0.3s ease;
+    }
+}
+
+/* Simple Page Carousel */
+.page-carousel {
+    position: relative;
+    text-align: center;
+    margin: 0 0 2rem 0; /* No top margin to bring title very close to header */
+}
+
+.carousel-slide {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    /* Use display none instead of absolute positioning to prevent scroll interference */
+    display: none;
+    width: 100%;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    /* Use block display for active slides */
+    display: block;
+    position: relative;
+}
+
+.slide-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem; /* Smaller for mobile */
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    text-align: center;
+    width: 100%;
+}
+
+.slide-title .title-container {
+    display: inline-block;
+    position: relative;
+    max-width: calc(100vw - 100px); /* Ensure space for arrows */
+}
+
+.slide-title .carousel-arrow {
+    position: absolute;
+    top: -0.05em; /* Negative value to bring arrows closer to text baseline */
+    transform: translateY(0);
+}
+
+.slide-title .left-arrow {
+    right: calc(100% + 8px); /* Close to text edge */
+}
+
+.slide-title .right-arrow {
+    left: calc(100% + 8px); /* Close to text edge */
+}
+
+.slide-title span {
+    display: inline-block;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-width: 380px) {
+    .slide-title {
+        font-size: 1.1rem;
+    }
+    
+    .slide-title .title-container {
+        max-width: calc(100vw - 80px);
+    }
+    
+    .slide-title .left-arrow {
+        right: calc(100% + 6px);
+    }
+    
+    .slide-title .right-arrow {
+        left: calc(100% + 6px);
+    }
+}
+
+/* For extremely small screens, reduce further */
+@media (max-width: 320px) {
+    .slide-title {
+        font-size: 1rem;
+    }
+    
+    .slide-title .title-container {
+        max-width: calc(100vw - 70px);
+    }
+}
+
+.slide-description {
+    font-size: 0.85rem; /* Smaller text for mobile compression */
+    line-height: 1.4; /* Tighter line spacing */
+    color: var(--text-primary);
+    max-width: 95%; /* More space usage on mobile */
+    margin: 0 auto;
+}
+
+.carousel-arrow {
+    background: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    width: 35px; /* Much smaller for mobile */
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--primary-color);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+/* Slide 5 (Your Custom Photos Page) - Position mobile videos to favor top content */
+#slide5 .sample-video-container.mobile .sample-video {
+    object-position: top center; /* Show top portion of video instead of center */
+}
+
+/* Simple loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.carousel-arrow:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.page-indicators {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: var(--primary-color);
+}
+
+/* Samples Help Text */
+.samples-help-text {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.samples-help-text .contact-link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.samples-help-text .contact-link:hover {
+    opacity: 0.7;
+}

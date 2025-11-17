@@ -1,0 +1,167 @@
+/* Desktop Header Component Styles */
+/* Clean desktop-only version with no mobile complications */
+
+/* Header Base Styles */
+.header {
+    background-color: var(--primary-color, #000000);
+    padding: 5px 0; /* Minimal padding */
+    box-shadow: var(--shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--header-height, 84px);
+    width: 100%;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* Default: center logo for landing page */
+    align-items: center;
+    padding: 0 40px;
+    height: 100%;
+    position: relative;
+}
+
+/* Transformed state: logo left, navigation absolutely centered */
+.header.transformed .header-container {
+    justify-content: center; /* Keep container centered */
+    gap: 0;
+}
+
+/* Logo Container */
+.logo-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Landing page: logo stays centered */
+.header:not(.transformed) .logo-container {
+    transform: translateX(0);
+}
+
+/* Transformed state: logo positioned absolutely on left */
+.header.transformed .logo-container {
+    position: absolute;
+    left: 15px; /* Moved further left for more spacing */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+/* Logo Styles */
+.logo {
+    /* Don't set height here - let page CSS control default size */
+    width: auto;
+    object-fit: contain;
+    filter: invert(1) brightness(1);
+    display: block;
+    margin: 0;
+}
+
+/* Only apply smaller size when header is transformed (non-landing pages) */
+.header.transformed .logo {
+    height: 130px;
+}
+
+.logo-full {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.logo-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0;
+    height: 50px;
+    width: 50px;
+    border-radius: 8px;
+}
+
+/* Header States - Logo transformation */
+/* Desktop: Always show full logo, never switch to icon */
+.header.transformed .logo-full {
+    opacity: 1 !important;
+    transform: scale(1);
+    visibility: visible !important;
+    display: block !important;
+}
+
+.header.transformed .logo-icon {
+    opacity: 0 !important;
+    transform: translateY(-50%) scale(0.8);
+    visibility: hidden !important;
+    display: none !important;
+}
+
+/* Navigation Styles - Desktop Only */
+.header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateX(20px);
+    width: 100%; /* Take full width to center properly */
+    height: 100%;
+    flex-wrap: nowrap; /* Never wrap navigation items */
+}
+
+.header.transformed .header-nav {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Navigation Items - Clean desktop styling */
+.nav-item {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 0 50px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    height: 100% !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    position: relative;
+    white-space: nowrap !important;
+    min-width: max-content !important;
+    flex-shrink: 0 !important;
+    vertical-align: middle !important;
+    line-height: 1 !important; /* Force single line height */
+}
+
+/* Desktop navigation has no line breaks in HTML, so no special handling needed */
+
+/* Vertical separator lines */
+.nav-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ffffff;
+}
+
+.nav-item:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Active state for current page - more subdued than hover */
+.nav-item.active {
+    background-color: rgba(255, 255, 255, 0.3) !important; /* 30% white opacity */
+    color: #ffffff !important;
+}

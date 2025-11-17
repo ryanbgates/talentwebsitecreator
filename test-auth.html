@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Auth with Phone Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Authentication Test with Phone Number</h1>
+    
+    <div class="test-section">
+        <h2>Test Instructions</h2>
+        <ol>
+            <li>Click "Open Auth Modal" to test the new phone number field</li>
+            <li>Try creating an account with valid data</li>
+            <li>Try creating another account with the same username or phone number</li>
+            <li>Verify that uniqueness validation works</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>Auth Modal Test</h2>
+        <button onclick="testAuthModal()">Open Auth Modal (Create Account)</button>
+        <button onclick="testLoginModal()">Open Auth Modal (Login)</button>
+        <div id="authStatus" class="status" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Cases</h2>
+        <p><strong>Valid Phone Numbers:</strong></p>
+        <ul>
+            <li>+1-555-123-4567</li>
+            <li>555-123-4567</li>
+            <li>+44 20 7946 0958</li>
+            <li>+33 1 42 68 53 00</li>
+        </ul>
+        
+        <p><strong>Invalid Phone Numbers:</strong></p>
+        <ul>
+            <li>123 (too short)</li>
+            <li>abc-def-ghij (contains letters)</li>
+            <li>+0123456789 (starts with 0 after country code)</li>
+        </ul>
+        
+        <p><strong>Login Tests:</strong></p>
+        <ul>
+            <li>✅ Login with email address (e.g., user@example.com)</li>
+            <li>✅ Login with username (e.g., johndoe)</li>
+            <li>❌ Try invalid username/email</li>
+            <li>❌ Try correct username/email with wrong password</li>
+        </ul>
+    </div>
+
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Include your Firebase config and auth components -->
+    <script src="./js/firebase-config.js"></script>
+    <script src="./js/firebase-auth.js"></script>
+    <script src="./components/auth-loader.js"></script>
+    
+    <script>
+        function testAuthModal() {
+            const statusDiv = document.getElementById('authStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status success';
+            statusDiv.innerHTML = 'Opening auth modal... Check for phone number field in create account form.';
+            
+            // Show the auth modal
+            if (window.authModal) {
+                window.authModal.showAuth();
+                
+                // Auto-switch to create account after a delay
+                setTimeout(() => {
+                    if (typeof showCreateAccount === 'function') {
+                        showCreateAccount();
+                        statusDiv.innerHTML = 'Auth modal opened with create account form. Test the phone number validation!';
+                    }
+                }, 1000);
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = 'Error: Auth modal not loaded. Check console for errors.';
+            }
+        }
+        
+        function testLoginModal() {
+            const statusDiv = document.getElementById('authStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status success';
+            statusDiv.innerHTML = 'Opening login form... You can now login with username or email!';
+            
+            // Show the auth modal
+            if (window.authModal) {
+                window.authModal.showAuth();
+                
+                // Auto-switch to login (should be default)
+                setTimeout(() => {
+                    if (typeof showLogin === 'function') {
+                        showLogin();
+                        statusDiv.innerHTML = 'Login form opened. Try logging in with either username or email address!';
+                    }
+                }, 1000);
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = 'Error: Auth modal not loaded. Check console for errors.';
+            }
+        }
+        
+        // Monitor auth state changes
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded. Firebase services available:', !!window.FirebaseServices);
+            
+            // Set up a test auth state listener
+            setTimeout(() => {
+                if (window.FirebaseAuth && window.FirebaseAuth.onAuthStateChanged) {
+                    window.FirebaseAuth.onAuthStateChanged((user) => {
+                        const statusDiv = document.getElementById('authStatus');
+                        if (user) {
+                            statusDiv.style.display = 'block';
+                            statusDiv.className = 'status success';
+                            statusDiv.innerHTML = `User logged in: ${user.email}`;
+                        } else {
+                            console.log('No user logged in');
+                        }
+                    });
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

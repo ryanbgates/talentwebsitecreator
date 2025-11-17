@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Referral Program - Talent Website Creator</title>
+    <link rel="stylesheet" href="../css/affiliate-mobile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" style="opacity: 0;">
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="page-hero">
+                <div class="container">
+                    <h1>Earn <span class="highlight-green">$50</span> Per Referral</h1>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="how-it-works">
+                <div class="container">
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <h3>Get Your Website</h3>
+                            <p>Purchase your personal actor website through Talent Website Creator to establish your professional online presence. Once you've fully purchased your site and become a client, you automatically unlock exclusive access to our referral program — turning your investment into an earning opportunity while helping fellow actors succeed.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <h3>Receive Your Referral Code</h3>
+                            <p>Once enrolled in the referral program, this page transforms into "My Referrals" — your personal dashboard where you can access your unique referral code, track all your referrals, and monitor your earnings in real-time. Share your code with friends, classmates, and colleagues to start earning.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <h3>Refer and Earn</h3>
+                            <p>When someone uses your code during their initial deposit:</p>
+                            <ul>
+                                <li>They get <strong>$100 off</strong> their final website payment.</li>
+                                <li>You earn <strong>$50</strong> once they complete their final payment and receive their website.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Help Text -->
+                    <p class="affiliate-help-text">Still Unsure? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="faq">
+                <div class="container">
+                    <h2>FAQ</h2>
+                    <div class="faq-items">
+                        <div class="faq-item">
+                            <h3>Who can join the Referral Program?</h3>
+                            <p>Only clients who have purchased a website are eligible. Once your site is created, you'll automatically receive your referral code.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>How do I get paid?</h3>
+                            <p>You earn $50 for each referral once they complete their final payment and receive their fully completed website. Referral earnings are paid out through PayPal twice per month on the 1st and 15th.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>Can multiple discount codes be used?</h3>
+                            <p>No — only one referral code can be applied per purchase. The code must be entered when making the initial deposit. The $100 discount applies to their final payment, and you earn your $50 once they complete that final payment.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>When will I get my code?</h3>
+                            <p>Your referral code becomes available immediately after your website purchase. This Referral Program page will transform into your "My Referrals" page, where you can view and share your unique code.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Help Text -->
+                    <p class="affiliate-help-text">Still Unsure? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+                </div>
+            </section>
+
+            <!-- Why It Matters Section -->
+            <section class="why-matters">
+                <div class="container">
+                    <h2>Why It Matters</h2>
+                    <div class="why-content">
+                        <p>Our careers are unpredictable — auditions come and go, gigs pop up and vanish, and income can be inconsistent.</p>
+                        <p>The Talent Website Creator Referral Program gives you a steady way to earn money while doing something that actually supports your community.</p>
+                        <p><strong>Share your code, help others build their platform, and get rewarded for it.</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta">
+                <div class="container">
+                    <h2>Start Earning Today</h2>
+                    <p>Purchase your website to access your referral dashboard and start sharing your code.</p>
+                    <button class="btn btn-primary" onclick="getMyWebsite()">Get My Website</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+    
+    <!-- Project Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../components/contact-loader.js"></script>
+    <script src="../js/affiliate.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Plans - Talent Website Creator</title>
+    <link rel="stylesheet" href="../css/my-plans-desktop.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" style="opacity: 0;">
+        <main class="main-content">
+            <!-- Plans Section -->
+            <section class="plans-section">
+                <div class="container">
+                    <!-- Action Buttons -->
+                    <div class="action-buttons-container">
+                        <button class="btn-start-new" id="startNewSiteBtn" onclick="goToPricing()">START NEW SITE</button>
+                    </div>
+                    
+                    <!-- Websites List -->
+                    <div class="websites-container" id="websitesContainer">
+                        <!-- Website cards will be dynamically inserted here -->
+                        <p class="loading-message">Loading your plans...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Update Plan Modal -->
+    <div id="updatePlanModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content update-plan-modal">
+            <div class="modal-header">
+                <h2>Update Service Plan</h2>
+                <button class="modal-close" onclick="closeUpdatePlanModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="current-plan-info">
+                    <p class="current-plan-label">Current Plan:</p>
+                    <p class="current-plan-name" id="currentPlanName">Loading...</p>
+                </div>
+
+                <div class="plan-options">
+                    <!-- Server Hosting Plan -->
+                    <div class="plan-option" data-plan="hosting">
+                        <div class="plan-option-header">
+                            <h3>Server Hosting</h3>
+                            <p class="plan-price">$9.99<span>/month</span></p>
+                        </div>
+                        <ul class="plan-features">
+                            <li>✓ Website hosting</li>
+                            <li>✓ Security & maintenance</li>
+                            <li>✓ Performance optimization</li>
+                        </ul>
+                        <button class="btn-select-plan" onclick="selectPlan('hosting', 'Server Hosting', 9.99)">Select Plan</button>
+                    </div>
+
+                    <!-- Unlimited Edits Plan -->
+                    <div class="plan-option" data-plan="updates">
+                        <div class="plan-option-header">
+                            <h3>Unlimited Edits</h3>
+                            <p class="plan-price">$9.99<span>/month</span></p>
+                        </div>
+                        <ul class="plan-features">
+                            <li>✓ Unlimited content updates</li>
+                            <li>✓ Design tweaks</li>
+                            <li>✓ Fast turnaround</li>
+                        </ul>
+                        <button class="btn-select-plan" onclick="selectPlan('updates', 'Unlimited Edits', 9.99)">Select Plan</button>
+                    </div>
+
+                    <!-- Complete Plan -->
+                    <div class="plan-option plan-recommended" data-plan="complete">
+                        <div class="plan-badge">BEST VALUE</div>
+                        <div class="plan-option-header">
+                            <h3>Complete Plan</h3>
+                            <p class="plan-price">$14.99<span>/month</span></p>
+                        </div>
+                        <ul class="plan-features">
+                            <li>✓ Everything in Server Hosting</li>
+                            <li>✓ Everything in Unlimited Edits</li>
+                            <li>✓ Priority support</li>
+                        </ul>
+                        <button class="btn-select-plan" onclick="selectPlan('complete', 'Complete Plan', 14.99)">Select Plan</button>
+                    </div>
+
+                    <!-- No Service Plan -->
+                    <div class="plan-option plan-no-service" data-plan="none">
+                        <div class="plan-option-header">
+                            <h3>No Service Plan</h3>
+                            <p class="plan-price">$0<span>/month</span></p>
+                        </div>
+                        <ul class="plan-features">
+                            <li>✓ Website stays built</li>
+                            <li>⚠️ No hosting or updates</li>
+                            <li>⚠️ You manage everything</li>
+                        </ul>
+                        <button class="btn-select-plan btn-cancel-plan" onclick="selectPlan('none', 'No Service', 0)">Cancel Service</button>
+                    </div>
+                </div>
+
+                <div class="plan-update-note">
+                    <p><strong>Note:</strong> Your plan will update immediately. You'll be charged the prorated amount based on the plan change.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Plan Change Modal -->
+    <div id="confirmPlanChangeModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content confirm-plan-modal">
+            <div class="modal-header">
+                <h2 id="confirmModalTitle">Confirm Plan Change</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirmModalMessage" style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 30px; line-height: 1.6;"></p>
+                <div class="modal-actions">
+                    <button class="btn-confirm-no" onclick="cancelPlanChange()">Cancel</button>
+                    <button class="btn-confirm-yes" onclick="confirmPlanChange()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+    
+    <!-- Project Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../js/my-plans.js"></script>
+</body>
+</html>

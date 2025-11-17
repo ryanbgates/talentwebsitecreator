@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Websites - Talent Website Creator</title>
+    <link rel="stylesheet" href="../css/my-websites-desktop.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Notification -->
+    <div id="progressNotification" class="progress-notification">
+        <span class="notification-icon">✓</span>
+        <span class="notification-text">Progress saved</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" style="opacity: 0;">
+        <main class="main-content">
+            <!-- Websites Grid -->
+            <section class="websites-section">
+                <div class="container">
+                    <!-- Default My Websites View -->
+                    <div class="my-websites-default" id="myWebsitesDefault">
+                        <!-- Action Buttons at Top -->
+                        <div class="action-buttons-container">
+                            <button class="btn-start-new" onclick="beginWebsiteSetup()">
+                                Start New Site
+                            </button>
+                            <button class="btn-view-samples" onclick="viewSamplesInMyWebsites()">
+                                View Website Samples
+                            </button>
+                        </div>
+                        
+                        <!-- Websites Grid Container -->
+                        <div class="websites-grid" id="websitesList">
+                            <p class="no-websites-message">No websites created</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Website Setup Form (hidden by default) -->
+                    <div class="my-websites-setup" id="myWebsitesSetup" style="display: none;">
+                        <div class="setup-header">
+                            <button class="back-button" onclick="returnToMyWebsites()">
+                                ← Back to My Websites
+                            </button>
+                            <h2>Website Setup</h2>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <span class="progress-text" id="progressText">Step 1 of 10</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Multi-step form container -->
+                        <div class="form-container">
+                            <form id="websiteSetupForm" novalidate>
+                                <!-- Step 1: Personal Information -->
+                                <div class="form-step active" data-step="1">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Personal Information</h3>
+                                            <p>Tell us about yourself</p>
+                                        </div>
+                                        <div class="form-fields two-column">
+                                            <div class="form-group required">
+                                                <label for="firstName">First Name</label>
+                                                <input type="text" id="firstName" name="firstName" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="lastName">Last Name</label>
+                                                <input type="text" id="lastName" name="lastName" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required full-width">
+                                                <label for="profession">Profession</label>
+                                                <input type="text" id="profession" name="profession" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="birthDate">Birth Date</label>
+                                                <input type="date" id="birthDate" name="birthDate" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="birthplace">Birthplace</label>
+                                                <input type="text" id="birthplace" name="birthplace" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: Referral Information -->
+                                <div class="form-step" data-step="2">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Referral Information</h3>
+                                        </div>
+                                        <div class="form-fields">
+                                            <div class="form-group required">
+                                                <label class="form-question-label">Were you referred to us?</label>
+                                                <div class="radio-group">
+                                                    <label class="radio-label">
+                                                        <input type="radio" name="hasReferral" value="yes" onchange="toggleReferralName(true)" required>
+                                                        Yes
+                                                    </label>
+                                                    <label class="radio-label">
+                                                        <input type="radio" name="hasReferral" value="no" onchange="toggleReferralName(false)" required>
+                                                        No
+                                                    </label>
+                                                </div>
+                                                <span class="error-message">Please select an option</span>
+                                            </div>
+                                            <div class="form-group required" id="referralNameGroup" style="display: none;">
+                                                <label for="referralName">Name of referral</label>
+                                                <input type="text" id="referralName" name="referralName" required>
+                                                <span class="error-message">Please enter the referral name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Physical Description -->
+                                <div class="form-step" data-step="3">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Physical Description</h3>
+                                            <p>Type your measurements below</p>
+                                        </div>
+                                        <div class="form-fields two-column">
+                                            <div class="form-group required">
+                                                <label for="height">Height</label>
+                                                <input type="text" id="height" name="height" placeholder="e.g., 5'8&quot;" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="weight">Weight</label>
+                                                <input type="text" id="weight" name="weight" placeholder="e.g., 150 lbs" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="hairColor">Hair Color</label>
+                                                <input type="text" id="hairColor" name="hairColor" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="eyeColor">Eye Color</label>
+                                                <input type="text" id="eyeColor" name="eyeColor" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group full-width">
+                                                <label for="ageRange">What age range you can play? (if talent is an actor/actress)</label>
+                                                <input type="text" id="ageRange" name="ageRange" placeholder="e.g., 25-35">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4: Contact Information -->
+                                <div class="form-step" data-step="4">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Contact Information</h3>
+                                            <p>Enter your personal/agency contact info below</p>
+                                        </div>
+                                        <div class="form-fields two-column">
+                                            <div class="form-group required">
+                                                <label for="directEmail">Direct Email</label>
+                                                <input type="email" id="directEmail" name="directEmail" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="directPhone">Direct Phone</label>
+                                                <input type="tel" id="directPhone" name="directPhone" required>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="agentEmail">Agent Email (optional)</label>
+                                                <input type="email" id="agentEmail" name="agentEmail">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="agentPhone">Agent Phone (optional)</label>
+                                                <input type="tel" id="agentPhone" name="agentPhone">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="instagram">Instagram</label>
+                                                <input type="text" id="instagram" name="instagram" placeholder="@username or full URL">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="imdb">IMDb</label>
+                                                <input type="url" id="imdb" name="imdb" placeholder="IMDb profile URL">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 5: Biography -->
+                                <div class="form-step" data-step="5">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Your Biography</h3>
+                                            <p>Type or paste your professional biography below</p>
+                                        </div>
+                                        <div class="form-fields">
+                                            <div class="form-group required">
+                                                <label for="biography">Type/Paste your biography here</label>
+                                                <p class="field-subtext">(we recommend using Chat GPT)</p>
+                                                <textarea id="biography" name="biography" rows="6" required placeholder="Enter your professional biography..."></textarea>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 6: Work and Credits -->
+                                <div class="form-step" data-step="6">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Work and Credits</h3>
+                                            <p>Type or paste your resume below (or email resume to talentwebsitecreation@gmail.com)</p>
+                                        </div>
+                                        <div class="form-fields">
+                                            <div class="form-group required">
+                                                <label for="resume">Resume/Credits</label>
+                                                <textarea id="resume" name="resume" rows="6" required placeholder="Enter your work history and credits, or email your resume to talentwebsitecreation@gmail.com"></textarea>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 7: Training -->
+                                <div class="form-step" data-step="7">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Training</h3>
+                                            <p>List all classes/training you've attended below</p>
+                                        </div>
+                                        <div class="form-fields">
+                                            <div class="form-group required">
+                                                <label for="training">List training here</label>
+                                                <textarea id="training" name="training" rows="5" required placeholder="List your acting classes, workshops, coaches, etc."></textarea>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 8: Skills -->
+                                <div class="form-step" data-step="8">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Skills</h3>
+                                            <p>List all of your skills/talents below</p>
+                                        </div>
+                                        <div class="form-fields">
+                                            <div class="form-group required">
+                                                <label for="skills">List skills here</label>
+                                                <textarea id="skills" name="skills" rows="5" required placeholder="List your special skills, languages, sports, instruments, etc."></textarea>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 9: Demo Reel -->
+                                <div class="form-step" data-step="9">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Photos & Demo Reel</h3>
+                                            <p>Upload your professional photos and share your demo reel</p>
+                                        </div>
+                                        <div class="form-fields">
+                                            <!-- Demo Reel Link -->
+                                            <div class="form-group full-width">
+                                                <label for="demoReel">Demo Reel Link (Optional)</label>
+                                                <small style="color: #666; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">If you have a demo reel, upload to YouTube and share the link, or email to talentwebsitecreation@gmail.com</small>
+                                                <input type="url" id="demoReel" name="demoReel" placeholder="YouTube URL or other video platform link">
+                                            </div>
+
+                                            <!-- Section Divider -->
+                                            <div class="form-section-divider"></div>
+
+                                            <!-- Headshots Section -->
+                                            <div class="form-group full-width photo-upload-section required">
+                                                <label>Headshots (2-3 required)</label>
+                                                <div class="photo-upload-container">
+                                                    <input type="file" id="headshotsInput" accept="image/*" multiple style="display: none;">
+                                                    <button type="button" class="photo-upload-btn" onclick="document.getElementById('headshotsInput').click()">
+                                                        <span class="upload-icon">📸</span>
+                                                        <span>Choose Headshots</span>
+                                                    </button>
+                                                    <div id="headshotsPreview" class="photo-preview-grid"></div>
+                                                    <div class="error-message">Please upload 2-3 headshots</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Performance Photos Section -->
+                                            <div class="form-group full-width photo-upload-section required">
+                                                <label>Performance Photos (10 required, 20-32 recommended)</label>
+                                                <small style="color: #666; font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">Upload photos from films, theatre performances, commercials, photoshoots, magazines, or any professional work</small>
+                                                <div class="photo-upload-container">
+                                                    <input type="file" id="performancePhotosInput" accept="image/*" multiple style="display: none;">
+                                                    <button type="button" class="photo-upload-btn" onclick="document.getElementById('performancePhotosInput').click()">
+                                                        <span class="upload-icon">🎬</span>
+                                                        <span>Choose Performance Photos</span>
+                                                    </button>
+                                                    <div class="bulk-actions" id="performanceBulkActions" style="display: none;">
+                                                        <button type="button" class="btn-select-mode" onclick="toggleSelectionMode()">Select Photos</button>
+                                                        <button type="button" class="btn-cancel-selection" onclick="toggleSelectionMode()">✕</button>
+                                                        <button type="button" class="btn-select-all" onclick="selectAllPhotos()">Select All</button>
+                                                        <button type="button" class="btn-delete-selected" onclick="deleteSelectedPhotos()">Delete Selected</button>
+                                                        <span class="selection-count" id="selectionCount"></span>
+                                                    </div>
+                                                    <div id="performancePhotosPreview" class="photo-preview-grid"></div>
+                                                    <div class="error-message">Please upload at least 10 performance photos</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 10: Color Scheme and Domain -->
+                                <div class="form-step" data-step="10">
+                                    <div class="step-content">
+                                        <div class="step-header">
+                                            <h3>Website Color Scheme and Domain</h3>
+                                            <p>Select your website colors and confirm your domain name</p>
+                                        </div>
+                                        <div class="form-fields three-column">
+                                            <div class="form-group required">
+                                                <label for="primaryColor">Main Color</label>
+                                                <div class="color-picker-container">
+                                                    <input type="color" id="primaryColor" name="primaryColor" value="#000000" required>
+                                                </div>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="secondaryColor">Secondary Color</label>
+                                                <div class="color-picker-container">
+                                                    <input type="color" id="secondaryColor" name="secondaryColor" value="#FFFFFF" required>
+                                                </div>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="accentColor">Highlight Color</label>
+                                                <div class="color-picker-container">
+                                                    <input type="color" id="accentColor" name="accentColor" value="#667eea" required>
+                                                </div>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                            
+                                            <!-- Section Divider -->
+                                            <div class="form-section-divider"></div>
+                                            
+                                            <div class="form-group full-width required">
+                                                <label>Have you already claimed your website domain "<span id="websiteNameDisplay"></span>" from GoDaddy, Namecheap, or other domain name claiming services? If not, please go claim your domain name before submitting this form.</label>
+                                                <div class="radio-group">
+                                                    <label class="radio-option">
+                                                        <input type="radio" name="domainStatus" value="claimed" required onchange="saveDomainStatus()">
+                                                        <span>Yes, I have claimed my domain name</span>
+                                                    </label>
+                                                    <label class="radio-option">
+                                                        <input type="radio" name="domainStatus" value="need-assistance" required onchange="saveDomainStatus()">
+                                                        <span>Need assistance</span>
+                                                    </label>
+                                                </div>
+                                                <span class="error-message">Required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Navigation -->
+                                <div class="form-navigation">
+                                    <button type="button" class="nav-btn prev-btn" id="prevBtn" onclick="previousStep()" disabled>
+                                        ← Previous
+                                    </button>
+                                    <button type="submit" class="nav-btn submit-edits-btn" id="submitEditsBtn" style="display: none;">
+                                        Submit Edits
+                                    </button>
+                                    <button type="button" class="nav-btn next-btn" id="nextBtn" onclick="nextStep()">
+                                        Next →
+                                    </button>
+                                    <button type="submit" class="nav-btn submit-btn" id="submitBtn" style="display: none;">
+                                        Submit Form
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Samples View (hidden by default) -->
+                    <div class="my-websites-samples" id="myWebsitesSamples" style="display: none;">
+                        <div class="samples-header">
+                            <button class="back-button" onclick="returnToMyWebsites()">
+                                ← Back to My Websites
+                            </button>
+                            <h2>Website Samples</h2>
+                        </div>
+                        
+                        <!-- Samples content will be loaded here -->
+                        <div id="samplesContainer">
+                            <div class="loading-samples">
+                                <div class="loading-text">Loading samples...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Confirmation Modal -->
+    <div id="editConfirmModal" class="edit-confirm-modal" style="display: none;">
+        <div class="edit-confirm-content">
+            <h3>Are you sure you want to update your website information?</h3>
+            <div class="edit-confirm-actions">
+                <button class="btn-cancel" onclick="cancelEditConfirm()">No</button>
+                <button class="btn-confirm" onclick="confirmEditWebsite()">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Website Modal -->
+    <div id="deleteWebsiteModal" class="delete-modal" style="display: none;">
+        <div class="delete-modal-content">
+            <h3>Are you sure you would like to delete your website?</h3>
+            <p>If so, type "Delete" below:</p>
+            <input type="text" id="deleteConfirmInput" class="delete-confirm-input" placeholder="Type 'Delete' to confirm">
+            <div class="delete-modal-actions">
+                <button class="btn-cancel" onclick="cancelDeleteWebsite()">Cancel</button>
+                <button class="btn-delete-confirm" onclick="confirmDeleteWebsite()" disabled>Delete Website</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Delete Confirmation Modal -->
+    <div id="photoDeleteModal" class="photo-delete-modal" style="display: none;">
+        <div class="photo-delete-content">
+            <h3 id="photoDeleteMessage">Are you sure you want to remove this photo?</h3>
+            <div class="photo-delete-actions">
+                <button class="btn-cancel" onclick="cancelPhotoDelete()">Cancel</button>
+                <button class="btn-confirm" onclick="confirmPhotoDelete()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../js/stripe-config.js"></script>
+    <script src="../components/checkout-loader.js"></script>
+    <script src="../js/my-websites.js"></script>
+</body>
+</html>

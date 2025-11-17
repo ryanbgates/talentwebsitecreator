@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Website Creator - Professional Actor Websites</title>
+    <link rel="stylesheet" href="../css/landing-desktop.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (initially hidden) -->
+    <div class="main-wrapper" id="mainWrapper" style="opacity: 0;">
+        <main class="main-content">
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-message">
+                    <h1>Your talent deserves a platform.<br><span class="highlight-text">Let's build it.</span></h1>
+                    <p><span class="underlined-text">This is the first step in setting yourself apart and getting noticed.</span> Whether you're just getting started or leveling up your career, your online presence matters, and we make it simple. Our websites are built to showcase your headshots, credits, reel, bio, and contact info in a clean and industry-ready format.</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <div class="button-row">
+                        <button class="btn btn-primary" onclick="viewSamples()">View Website Samples</button>
+                        <button class="btn btn-login" onclick="loginAccount()">Login / Create Account</button>
+                    </div>
+                    <div class="button-row">
+                        <button class="btn btn-secondary" onclick="viewPricing()">Plans</button>
+                        <button class="btn btn-secondary" onclick="affiliateProgram()">Referral Program</button>
+                    </div>
+                    <div class="button-row">
+                        <button class="btn btn-secondary" onclick="window.contactModal && window.contactModal.show()">Contact Us</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+    </div> <!-- End main-wrapper -->
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+
+    
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+    
+    <!-- Project Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../components/contact-loader.js"></script>
+    <script src="../js/landing.js"></script>
+</body>
+</html>

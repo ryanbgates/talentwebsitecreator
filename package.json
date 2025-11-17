@@ -1,0 +1,17 @@
+{
+  "name": "firebase-debug-logger",
+  "version": "1.0.0",
+  "description": "Debug logger for Firebase authentication",
+  "main": "debug-logger.js",
+  "scripts": {
+    "start": "node debug-logger.js",
+    "dev": "nodemon debug-logger.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Referrals - Talent Website Creator</title>
+    <link rel="stylesheet" href="../css/my-referrals-desktop.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" style="opacity: 0;">
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="page-hero">
+                <div class="container">
+                    <h1>Your Unique Referral Code</h1>
+                </div>
+            </section>
+            
+            <!-- Referrals Section -->
+            <section class="referrals-section">
+                <div class="container">
+                    
+                    <!-- Promo Code Card -->
+                    <div class="promo-card">
+                        <div class="promo-left">
+                            <div class="promo-code-display">
+                                <button class="btn-copy" onclick="copyPromoCode()">
+                                    <span class="copy-icon">📋</span> Copy Code
+                                </button>
+                                <div class="code-box" id="promoCodeBox">
+                                    <span class="code-discount">$100 OFF</span>
+                                    <span class="code-text" id="promoCodeText">Loading...</span>
+                                </div>
+                            </div>
+                            <p class="promo-help">Share this code! When used at checkout, they save $100 on their final payment—and you earn $50 once they complete it!</p>
+                        </div>
+                        <div class="promo-right">
+                            <div class="promo-stat">
+                                <div class="promo-stat-content">
+                                    <div class="promo-stat-number" id="totalReferrals">0</div>
+                                    <div class="promo-stat-label">Total Referrals</div>
+                                </div>
+                            </div>
+                            <div class="promo-stat">
+                                <div class="promo-stat-content">
+                                    <div class="promo-stat-number" id="totalEarnings">$0</div>
+                                    <div class="promo-stat-label">Total Earnings</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payout Cards Container -->
+                    <div class="payout-cards-wrapper">
+                        <!-- Payout Information Card -->
+                        <div class="payout-info-card">
+                            <h3 class="payout-title">💵 Payouts 💵</h3>
+                            <p class="payout-schedule">Payouts are processed on the <strong>1st</strong> and <strong>15th</strong> of every month.</p>
+                            <p class="payout-countdown" id="payoutCountdown">Calculating next payout...</p>
+                            
+                            <div class="paypal-section" id="paypalSection">
+                                <!-- Show this if no PayPal saved -->
+                                <div class="paypal-empty" id="paypalEmpty">
+                                    <button class="btn-paypal" onclick="addPayPalAccount()">
+                                        <span class="paypal-icon">📧</span> Add PayPal Account
+                                    </button>
+                                </div>
+                                
+                                <!-- Show this if PayPal is saved -->
+                                <div class="paypal-saved" id="paypalSaved" style="display: none;">
+                                    <p class="paypal-label">PayPal Account:</p>
+                                    <p class="paypal-email" id="paypalEmail">user@example.com</p>
+                                    <button class="btn-paypal-change" onclick="changePayPalAccount()">
+                                        <span class="paypal-icon">✏️</span> Change PayPal Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payout History Card -->
+                        <div class="payout-history-card">
+                            <h3 class="payout-title">📋 Payout History 📋</h3>
+                            
+                            <div class="payout-table-wrapper">
+                                <table class="payout-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Referrals</th>
+                                            <th>PayPal Account</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="payoutHistoryList">
+                                        <!-- Payout history rows will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div id="noPayoutHistory" class="no-payout-history" style="display: none;">
+                                <p>No payout history yet. Your processed payouts will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="stats-grid" style="display: none;">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-number" id="totalReferralsOld">0</div>
+                            <div class="stat-label">Total Referrals</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-number" id="totalEarningsOld">$0</div>
+                            <div class="stat-label">Total Earnings</div>
+                        </div>
+                    </div>
+
+                    <!-- Example Earnings -->
+                    <div class="example-section" style="display: none;">
+                        <h3>💡 Earnings Example</h3>
+                        <div class="example-box">
+                            <p>If you refer <strong>5 friends</strong> and they all purchase websites:</p>
+                            <div class="calculation">
+                                <span class="calc-step">5 referrals × $50 per referral</span>
+                                <span class="calc-equals">=</span>
+                                <span class="calc-result">$250 earned!</span>
+                            </div>
+                            <p class="example-note">Your friends save $100 each, and you earn passive income while helping others build their careers.</p>
+                        </div>
+                    </div>
+
+                    <!-- Help Text -->
+                    <p class="referrals-help-text">Need Help? <a href="#" class="contact-link" onclick="event.preventDefault(); window.contactModal?.show();">Contact Us</a></p>
+
+                    <!-- FAQ Section -->
+                    <div class="faq-section">
+                        <h2>Frequently Asked Questions</h2>
+                        <div class="faq-grid">
+                            <div class="faq-item">
+                                <h3>How do I get paid?</h3>
+                                <p>You earn $50 once your referral completes their final payment and receives their fully completed website. Earnings are automatically credited to your account and you can request a payout through your dashboard.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>When does someone need to use my code?</h3>
+                                <p>Your referral must enter your promo code when making their initial deposit. They'll save $100 off their final payment, and you'll earn $50 once they complete their final payment and receive their website.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Is there a limit to how many people I can refer?</h3>
+                                <p>No! You can refer as many people as you'd like. The more you share, the more you earn.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Can I refer myself or family members?</h3>
+                                <p>Referral codes are intended for genuine referrals to new customers. Self-referrals or attempts to game the system may result in forfeiture of earnings.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>How long does my code stay active?</h3>
+                                <p>Your promo code remains active as long as you maintain an active website with Talent Website Creator.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>What if my referral doesn't complete their purchase?</h3>
+                                <p>You only earn your $50 commission when a referred customer completes their final payment and receives their finished website. If they only make the deposit but don't complete the final payment, you will not earn the referral bonus.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- PayPal Email Modal -->
+    <div id="paypalModal" class="paypal-modal" style="display: none;">
+        <div class="paypal-modal-content">
+            <div class="paypal-modal-header">
+                <h3 id="paypalModalTitle">Add PayPal Account</h3>
+                <button class="paypal-modal-close" onclick="closePayPalModal()">&times;</button>
+            </div>
+            <div class="paypal-modal-body">
+                <p class="paypal-modal-description">Enter your PayPal email address to receive your referral earnings.</p>
+                <input 
+                    type="email" 
+                    id="paypalEmailInput" 
+                    class="paypal-email-input" 
+                    placeholder="your.email@example.com"
+                    autocomplete="email"
+                />
+                <p class="paypal-modal-note">Make sure this email is associated with your PayPal account.</p>
+            </div>
+            <div class="paypal-modal-footer">
+                <button class="btn-cancel" onclick="closePayPalModal()">Cancel</button>
+                <button class="btn-save" onclick="savePayPalEmail()">Save PayPal Email</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+    
+    <!-- Project Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../components/contact-loader.js"></script>
+    <script src="../js/my-referrals.js"></script>
+</body>
+</html>

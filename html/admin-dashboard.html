@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Talent Website Creator</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+    
+    <!-- JSZip for creating zip files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    
+    <!-- Admin-specific Firebase Config (separate auth instance) -->
+    <script src="../js/admin-firebase-config.js"></script>
+    
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader"></div>
+        <p>Loading Admin Dashboard...</p>
+    </div>
+
+    <!-- Auth Check Screen -->
+    <div id="authScreen" class="auth-screen" style="display: none;">
+        <div class="auth-container">
+            <h1>🔒 Admin Access Only</h1>
+            <p>Please enter the admin password</p>
+            <button id="signInBtn" class="btn-primary">Enter Password</button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>🎬 Admin Dashboard</h1>
+                <div class="header-actions">
+                    <span class="admin-email" id="adminEmail"></span>
+                    <button id="signOutBtn" class="btn-secondary">Sign Out</button>
+                </div>
+            </div>
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="website-requests" onclick="switchTab('website-requests')">
+                    🌐 Website Requests
+                </button>
+                <button class="tab-btn" data-tab="current-referrals" onclick="switchTab('current-referrals')">
+                    💰 Current Referrals
+                </button>
+                <button class="tab-btn" data-tab="processed-payouts" onclick="switchTab('processed-payouts')">
+                    ✅ Processed Payouts
+                </button>
+            </div>
+        </header>
+
+        <!-- Website Requests Tab Content -->
+        <div id="websiteRequestsTab" class="tab-content active">
+            <!-- Stats Overview - Now Clickable Filters -->
+            <div class="stats-container">
+            <div class="stat-card active" data-filter="building" onclick="filterByStatus('building')">
+                <div class="stat-icon">🔨</div>
+                <div class="stat-info">
+                    <div class="stat-label">Building</div>
+                    <div class="stat-value" id="statBuilding">0</div>
+                </div>
+            </div>
+            <div class="stat-card" data-filter="preview" onclick="filterByStatus('preview')">
+                <div class="stat-icon">👀</div>
+                <div class="stat-info">
+                    <div class="stat-label">In Preview</div>
+                    <div class="stat-value" id="statPreview">0</div>
+                </div>
+            </div>
+            <div class="stat-card" data-filter="awaiting-final-payment" onclick="filterByStatus('awaiting-final-payment')">
+                <div class="stat-icon">💳</div>
+                <div class="stat-info">
+                    <div class="stat-label">Awaiting Payment</div>
+                    <div class="stat-value" id="statAwaitingPayment">0</div>
+                </div>
+            </div>
+            <div class="stat-card" data-filter="finalizing" onclick="filterByStatus('finalizing')">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <div class="stat-label">Finalizing</div>
+                    <div class="stat-value" id="statFinalizing">0</div>
+                </div>
+            </div>
+            <div class="stat-card" data-filter="complete" onclick="filterByStatus('complete')">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <div class="stat-label">Completed</div>
+                    <div class="stat-value" id="statComplete">0</div>
+                </div>
+            </div>
+            <div class="stat-card" data-filter="editing" onclick="filterByStatus('editing')">
+                <div class="stat-icon">✏️</div>
+                <div class="stat-info">
+                    <div class="stat-label">Editing</div>
+                    <div class="stat-value" id="statEditing">0</div>
+                </div>
+            </div>
+            <div class="stat-card" data-filter="edited" onclick="filterByStatus('edited')">
+                <div class="stat-icon">📝</div>
+                <div class="stat-info">
+                    <div class="stat-label">Edited</div>
+                    <div class="stat-value" id="statEdited">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forms List -->
+        <div class="forms-container">
+            <div id="formsList" class="forms-list">
+                <!-- Forms will be loaded here -->
+            </div>
+            <div id="noForms" class="no-forms" style="display: none;">
+                <p>No forms found</p>
+            </div>
+        </div>
+        </div>
+
+        <!-- Current Referrals Tab Content -->
+        <div id="currentReferralsTab" class="tab-content">
+            <div class="referral-payouts-container">
+                <div class="container">
+                    <h2 class="section-title">💰 Current Referrals</h2>
+                    <p class="section-description">Users with active referral earnings</p>
+                    
+                    <!-- Referral Stats -->
+                    <div class="referral-stats">
+                        <div class="stat-card-small">
+                            <div class="stat-icon-small">👥</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Users with Referrals</div>
+                                <div class="stat-value" id="totalReferralUsers">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-small">
+                            <div class="stat-icon-small">💵</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Pending Earnings</div>
+                                <div class="stat-value" id="totalEarnings">$0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-small">
+                            <div class="stat-icon-small">✅</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Referrals</div>
+                                <div class="stat-value" id="totalReferralsCount">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Referral Users List -->
+                    <div id="referralUsersList" class="referral-users-list">
+                        <!-- Users will be loaded here -->
+                    </div>
+                    <div id="noReferralUsers" class="no-forms" style="display: none;">
+                        <p>No users with referral earnings found</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processed Payouts Tab Content -->
+        <div id="processedPayoutsTab" class="tab-content">
+            <div class="referral-payouts-container">
+                <div class="container">
+                    <h2 class="section-title">✅ Processed Payouts</h2>
+                    <p class="section-description">All payouts processed across all users</p>
+                    
+                    <!-- Processed Payouts Stats -->
+                    <div class="referral-stats">
+                        <div class="stat-card-small">
+                            <div class="stat-icon-small">📋</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Payouts Processed</div>
+                                <div class="stat-value" id="totalPayoutsProcessed">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-small">
+                            <div class="stat-icon-small">💰</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Amount Paid Out</div>
+                                <div class="stat-value" id="totalAmountPaid">$0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-small">
+                            <div class="stat-icon-small">✅</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Referrals Paid</div>
+                                <div class="stat-value" id="totalReferralsPaid">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Processed Payouts List -->
+                    <div id="processedPayoutsList" class="referral-users-list">
+                        <!-- Processed payouts will be loaded here -->
+                    </div>
+                    <div id="noProcessedPayouts" class="no-forms" style="display: none;">
+                        <p>No processed payouts found</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Detail Modal -->
+    <div id="formDetailModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Form Details</h2>
+                <button class="modal-close" onclick="closeFormDetail()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Form details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeFormDetail()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div id="updateStatusModal" class="modal" style="display: none;">
+        <div class="modal-content status-modal">
+            <div class="modal-header">
+                <h2 id="statusModalTitle">Update Website Status</h2>
+                <button class="modal-close" onclick="closeStatusModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="statusModalSubtitle" class="status-modal-subtitle"></p>
+                <div class="status-options">
+                    <button class="status-option" data-status="building" onclick="selectStatus('building')">
+                        <div class="status-option-icon">🔨</div>
+                        <div class="status-option-label">Building</div>
+                        <div class="status-option-description">Website is currently being built</div>
+                    </button>
+                    <button class="status-option" data-status="preview" onclick="selectStatus('preview')">
+                        <div class="status-option-icon">👀</div>
+                        <div class="status-option-label">In Preview</div>
+                        <div class="status-option-description">Ready for client review</div>
+                    </button>
+                    <button class="status-option" data-status="awaiting-final-payment" onclick="selectStatus('awaiting-final-payment')">
+                        <div class="status-option-icon">💳</div>
+                        <div class="status-option-label">Awaiting Payment</div>
+                        <div class="status-option-description">Waiting for final payment</div>
+                    </button>
+                    <button class="status-option" data-status="finalizing" onclick="selectStatus('finalizing')">
+                        <div class="status-option-icon">⏳</div>
+                        <div class="status-option-label">Finalizing</div>
+                        <div class="status-option-description">Making final adjustments</div>
+                    </button>
+                    <button class="status-option" data-status="complete" onclick="selectStatus('complete')">
+                        <div class="status-option-icon">✅</div>
+                        <div class="status-option-label">Complete</div>
+                        <div class="status-option-description">Website is finished and live</div>
+                    </button>
+                    <button class="status-option" data-status="editing" onclick="selectStatus('editing')">
+                        <div class="status-option-icon">✏️</div>
+                        <div class="status-option-label">Editing</div>
+                        <div class="status-option-description">Client is editing website info</div>
+                    </button>
+                    <button class="status-option" data-status="edited" onclick="selectStatus('edited')">
+                        <div class="status-option-icon">📝</div>
+                        <div class="status-option-label">Edited</div>
+                        <div class="status-option-description">Client submitted edits</div>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeStatusModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard JavaScript -->
+    <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>

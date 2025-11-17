@@ -1,0 +1,165 @@
+/* Mobile Header Component Styles */
+/* Compressed mobile-only version */
+
+/* Header Base Styles */
+.header {
+    background-color: var(--primary-color, #000000);
+    padding: 3px 0; /* Even more minimal padding */
+    box-shadow: var(--shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--header-height, 84px);
+    width: 100%;
+}
+
+.header-container {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Remove all padding to reach true edges */
+    height: 100%;
+    position: relative;
+}
+
+/* Transformed state: logo left, navigation absolutely centered */
+.header.transformed .header-container {
+    justify-content: center; /* Keep container centered */
+    gap: 0;
+}
+
+/* Logo Container */
+.logo-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.header:not(.transformed) .logo-container {
+    transform: translateX(0);
+}
+
+.header.transformed .logo-container {
+    position: absolute;
+    left: 5px; /* Closer to edge since no container padding */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: auto; /* Only as wide as the logo */
+    height: auto; /* Only as tall as the logo */
+    max-width: 55px; /* Slightly smaller logo for more nav space */
+}
+
+/* Logo Styles - Mobile */
+.logo {
+    /* Don't set height here - let page CSS control default size */
+    width: auto;
+    object-fit: contain;
+    filter: invert(1) brightness(1);
+    display: block;
+    margin: 0;
+}
+
+/* Only apply smaller size when header is transformed (non-landing pages) */
+.header.transformed .logo {
+    height: 90px;
+}
+
+.logo-full {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.logo-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0;
+    height: 50px;
+    width: 50px;
+    border-radius: 6px;
+}
+
+/* Header States - Logo transformation */
+.header.transformed .logo-full {
+    opacity: 0 !important;
+    transform: scale(0.8);
+    visibility: hidden !important; /* Completely hide it */
+    display: none !important; /* Force it to not render at all */
+}
+
+.header.transformed .logo-icon {
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1);
+}
+
+/* Navigation Styles - Mobile Only */
+.header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribute buttons evenly */
+    opacity: 0;
+    transform: translateX(20px);
+    width: calc(100% - 65px); /* Account for logo width, use remaining space */
+    height: 100%;
+    margin-left: 65px; /* Start right after logo */
+    padding-right: 0; /* No right padding - go to edge */
+    z-index: 20; /* Higher than logo to ensure clicks work */
+    position: relative;
+}
+
+.header.transformed .header-nav {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Navigation Items - Mobile compressed styling */
+.nav-item {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 0 !important; /* Remove all padding to maximize space usage */
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem !important; /* Increased from 0.75rem */
+    font-weight: 600 !important; /* Increased from 400 to 600 (semi-bold) */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    height: 100% !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    position: relative;
+    white-space: normal !important;
+    line-height: 1.1 !important;
+    flex: 1 !important; /* Make all items equal width */
+    vertical-align: middle !important;
+}
+
+/* Vertical separator lines */
+.nav-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ffffff;
+}
+
+.nav-item:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Active state for current page - more subdued than hover */
+.nav-item.active {
+    background-color: rgba(255, 255, 255, 0.25) !important; /* 25% white opacity for mobile */
+    color: #ffffff !important;
+}

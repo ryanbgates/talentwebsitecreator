@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans - Talent Website Creator</title>
+    <link rel="stylesheet" href="../css/pricing-desktop.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="../assets/images/twc-full-logo.jpg" alt="Talent Website Creator">
+            </div>
+            <div class="loading-animation">
+                <div class="scroll-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" style="opacity: 0;">
+        <main class="main-content">
+            <section class="page-hero">
+                <div class="container">
+                    <div class="hero-buttons">
+                        <button class="hero-cta-button primary" onclick="scrollToSection('main-service')">
+                            <span class="button-title">Get Your Website</span>
+                            <span class="button-payment-breakdown">$99.99 down, $299.99 when satisfied</span>
+                        </button>
+                        
+                        <div class="button-divider">— OR —</div>
+                        
+                        <button class="hero-cta-button secondary" onclick="scrollToSection('additional-services')">
+                            <span class="button-title">Get Website + Website Management</span>
+                            <span class="button-subtitle">We host, manage, and update it for you</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Additional Services Section -->
+            <section class="additional-services" id="additional-services">
+                <div class="container">
+                    <div class="services-grid">
+                        <!-- Hosting Only -->
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-prefix">Website +</div>
+                                <h2>☁︎ Server Hosting</h2>
+                                <div class="service-price">$9.99/month</div>
+                            </div>
+                            <div class="service-content">
+                                <p class="service-description">Keep your site online, secure, and fast with our managed hosting service.</p>
+                                
+                                <div class="service-includes">
+                                    <h4>Includes:</h4>
+                                    <ul>
+                                        <li>24/7 uptime monitoring</li>
+                                        <li>SSL security</li>
+                                        <li>Monthly backups</li>
+                                        <li>Priority support</li>
+                                    </ul>
+                                </div>
+
+                                <button class="cta-button secondary" onclick="handleSecureWebsiteClick('hosting', event)">Secure Your Website Now!</button>
+                                <p class="service-subtext">without this plan, website files are delivered to you for self-hosting</p>
+                            </div>
+                        </div>
+
+                        <!-- Updates Plan -->
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-prefix">Website +</div>
+                                <h2>🛠︎ Unlimited Edits</h2>
+                                <div class="service-price">$9.99/month</div>
+                            </div>
+                            <div class="service-content">
+                                <p class="service-description">Request changes to website info, roles, photos, demo reel, and more whenever you need them.</p>
+                                
+                                <div class="service-includes">
+                                    <h4>Includes:</h4>
+                                    <ul>
+                                        <li>Unlimited content updates</li>
+                                        <li>Photo and headshot changes</li>
+                                        <li>Demo reel updates</li>
+                                        <li>Credits and resume edits</li>
+                                    </ul>
+                                </div>
+
+                                <button class="cta-button secondary" onclick="handleSecureWebsiteClick('updates', event)">Secure Your Website Now!</button>
+                                <p class="service-subtext">without this plan, changes are $5 per edit</p>
+                            </div>
+                        </div>
+
+                        <!-- Complete Plan -->
+                        <div class="service-card featured">
+                            <div class="corner-ribbon"></div>
+                            <div class="service-header">
+                                <div class="service-prefix">Website +</div>
+                                <h2>⭐ Complete Plan</h2>
+                                <div class="service-price">$14.99/month</div>
+                                <h3>Hosting + Edits</h3>
+                            </div>
+                            <div class="service-content">
+                                <p class="service-description">The ultimate package — includes both hosting and unlimited updates. Set it and forget it.</p>
+                                
+                                <div class="service-includes">
+                                    <h4>Includes:</h4>
+                                    <div class="includes-grid">
+                                        <ul class="includes-left">
+                                            <li>24/7 uptime monitoring</li>
+                                            <li>SSL security</li>
+                                            <li>Monthly backups</li>
+                                            <li>Priority support</li>
+                                            <li>Demo reel updates</li>
+                                        </ul>
+                                        <ul class="includes-right">
+                                            <li>Unlimited content updates</li>
+                                            <li>Photo and headshot changes</li>
+                                            <li>Credits and resume edits</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <button class="cta-button secondary" onclick="handleSecureWebsiteClick('complete', event)">Secure Your Website Now!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Website Creation Section -->
+            <section class="main-service" id="main-service">
+                <div class="container">
+                    <div class="service-card main-card">
+                        <div class="service-header">
+                            <div class="service-title-wrapper">
+                                <img src="../assets/images/twc-icon-logo.jpg" alt="TWC Logo" class="service-icon">
+                                <h2>One-Time Website Build</h2>
+                                <div class="service-icon-spacer" aria-hidden="true"></div>
+                            </div>
+                            <div class="service-price-split">
+                                <div class="price-line">$99.99 down, $299.99 when satisfied</div>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <p class="service-description">Get your personal actor website professionally designed and built to industry standards. Perfect for showcasing your headshots, reel, credits, and bio — all in one place.</p>
+                            
+                            <div class="service-includes">
+                                <h4>Includes:</h4>
+                                <div class="main-includes-grid">
+                                    <ul class="main-includes-left">
+                                        <li>Custom domain setup assistance</li>
+                                        <li>Mobile-friendly responsive design</li>
+                                        <li>SEO optimization for your name</li>
+                                    </ul>
+                                    <ul class="main-includes-right">
+                                        <li>Social media integration</li>
+                                        <li>Headshots, credits, demo reel, bio, and contact form</li>
+                                        <li>Domain registration guidance (GoDaddy, Namecheap)</li>
+                                    </ul>
+                                </div>
+                                <ul class="main-includes-bottom">
+                                    <li>Access to our <span class="referral-link" onclick="navigateToAffiliate()">Referral Program</span> — start earning cash by referring other performers!</li>
+                                </ul>
+                            </div>
+
+                            <button class="cta-button primary" onclick="handleSecureWebsiteClick('website-build', event)">Secure Your Website Now!</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Final CTA Section -->
+            <section class="final-cta">
+                <div class="container">
+                    <h2>Need Help?</h2>
+                    <button class="cta-button primary large" onclick="window.contactModal?.show()">Contact Us Now!</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/firebase-auth.js"></script>
+    
+    <!-- Project Scripts -->
+    <script src="../components/header-loader.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/page-utils.js"></script>
+    <script src="../components/auth-loader.js"></script>
+    <script src="../components/navigation-loader.js"></script>
+    <script src="../components/checkout-loader.js"></script>
+    <script src="../components/contact-loader.js"></script>
+    <script src="../js/stripe-config.js"></script>
+    <script src="../js/pricing.js"></script>
+</body>
+</html>

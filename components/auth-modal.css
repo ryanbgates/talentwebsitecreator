@@ -1,0 +1,359 @@
+/* Authentication Modal System Styles */
+/* This CSS can be included on any page that uses the auth modal component */
+
+/* Auth Section Overlay */
+.auth-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999 !important;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.auth-section.show {
+    opacity: 1;
+}
+
+/* Auth Container */
+.auth-container {
+    background: var(--secondary-color, #ffffff);
+    background-image: 
+        radial-gradient(circle at 1px 1px, rgba(0,0,0,0.08) 1px, transparent 0),
+        linear-gradient(45deg, rgba(0,0,0,0.016) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(0,0,0,0.016) 25%, transparent 25%);
+    background-size: 10px 10px, 20px 20px, 20px 20px;
+    border: 2px solid var(--primary-color, #000000);
+    padding: 2rem;
+    border-radius: var(--border-radius, 12px);
+    box-shadow: var(--shadow-hover, 0 12px 35px rgba(0, 0, 0, 0.25));
+    max-width: 450px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.auth-section.show .auth-container {
+    transform: translateY(0);
+}
+
+/* Close Button */
+.close-auth-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary, #666666);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.2s ease;
+    z-index: 1;
+}
+
+.close-auth-btn:hover {
+    color: var(--text-primary, #333333);
+}
+
+/* Back Button */
+.back-btn {
+    position: absolute;
+    left: -0.5rem;
+    top: 0;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--text-secondary, #666666);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.back-btn:hover {
+    color: var(--text-primary, #333333);
+    transform: translateX(-2px);
+}
+
+/* Auth Message */
+.auth-message {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.auth-message h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary, #333333);
+}
+
+.auth-message p {
+    color: var(--text-secondary, #666666);
+    font-size: 0.95rem;
+}
+
+/* Auth Form */
+.auth-form {
+    margin-bottom: 1.25rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color, #e0e0e0);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text-primary, #333333);
+    background-color: var(--secondary-color, #ffffff);
+    transition: var(--transition, all 0.3s ease);
+    font-family: 'Inter', sans-serif;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color, #000000);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-group input::placeholder {
+    color: var(--text-secondary, #666666);
+}
+
+/* Auth Actions */
+.auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: var(--transition, all 0.3s ease);
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-width: 200px;
+}
+
+.btn-primary.auth-btn {
+    background-color: var(--primary-color, #000000);
+    color: var(--secondary-color, #ffffff);
+    border: 2px solid var(--primary-color, #000000);
+}
+
+.btn-primary.auth-btn:hover {
+    background-color: var(--secondary-color, #ffffff);
+    color: var(--primary-color, #000000);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover, 0 12px 35px rgba(0, 0, 0, 0.25));
+}
+
+/* Button Success State */
+.auth-btn.auth-btn-success {
+    background-color: #28a745 !important;
+    color: white !important;
+    border-color: #28a745 !important;
+    cursor: default;
+}
+
+.auth-btn.auth-btn-success:hover {
+    background-color: #28a745 !important;
+    color: white !important;
+    transform: none !important;
+}
+
+/* Button Error State */
+.auth-btn.auth-btn-error {
+    background-color: #dc3545 !important;
+    color: white !important;
+    border-color: #dc3545 !important;
+    cursor: default;
+}
+
+.auth-btn.auth-btn-error:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+    transform: none !important;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--text-secondary, #666666);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.btn-text:hover {
+    color: var(--primary-color, #000000);
+    text-decoration: underline;
+}
+
+/* Auth Footer */
+.auth-footer {
+    text-align: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.auth-footer p {
+    color: var(--text-secondary, #666666);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--primary-color, #000000);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    transition: opacity 0.2s ease;
+}
+
+.btn-link:hover {
+    opacity: 0.8;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 1.5rem 1.25rem;
+        margin: 0.75rem;
+        max-width: none;
+        width: calc(100% - 1.5rem);
+    }
+    
+    .auth-message {
+        margin-bottom: 1.25rem;
+    }
+    
+    .auth-message h1 {
+        font-size: 1.4rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .auth-message p {
+        font-size: 0.9rem;
+    }
+    
+    .auth-form {
+        margin-bottom: 1rem;
+    }
+    
+    .input-group {
+        margin-bottom: 0.875rem;
+    }
+    
+    .input-group input {
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .auth-actions {
+        gap: 0.5rem;
+    }
+    
+    .auth-btn {
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        min-width: 180px;
+    }
+    
+    .auth-footer {
+        padding-top: 0.75rem;
+    }
+    
+    .auth-footer p {
+        font-size: 0.85rem;
+    }
+    
+    .btn-link {
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0 !important;
+    }
+    
+    .btn-text {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+    
+    .back-btn {
+        font-size: 1.2rem;
+        left: -0.25rem;
+        padding: 0.25rem;
+    }
+    
+    .close-auth-btn {
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 1.4rem;
+        padding: 0.5rem;
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Mobile Safari specific adjustments */
+    .auth-section {
+        height: calc(var(--vh, 1vh) * 100);
+        padding: 1rem;
+    }
+}
+
+/* Extra small mobile adjustments */
+@media (max-width: 375px) {
+    .auth-container {
+        padding: 1.25rem 1rem;
+        margin: 0.5rem;
+        width: calc(100% - 1rem);
+    }
+    
+    .auth-message h1 {
+        font-size: 1.3rem;
+    }
+    
+    .input-group input {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.95rem;
+    }
+    
+    .auth-btn {
+        padding: 0.8rem 0.875rem;
+        font-size: 0.85rem;
+        min-width: 160px;
+    }
+}

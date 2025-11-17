@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Website Creator - Professional Actor Websites</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            /* Hide content while routing */
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Firebase SDK (minimal for auth check) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+
+    <script>
+        // Firebase configuration - inline for index page
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWJ6v5ASvFEkaPSTKZ2JdGfxgefc0gAoo",
+            authDomain: "talentwebsitecreator-8356b.firebaseapp.com",
+            projectId: "talentwebsitecreator-8356b",
+            storageBucket: "talentwebsitecreator-8356b.firebasestorage.app",
+            messagingSenderId: "217557398927",
+            appId: "1:217557398927:web:e3a0ad1c283f66035e07fa",
+            measurementId: "G-1NXM6B8TZW"
+        };
+
+        // Device detection function
+        function detectDevice() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isTablet = /iPad/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            return {
+                isMobile: isMobile && !isTablet,
+                isDesktop: !isMobile || isTablet
+            };
+        }
+
+        // Route user to appropriate page based on auth state and device
+        function routeUser(isLoggedIn, device) {
+            if (isLoggedIn) {
+                // User is logged in - go to dashboard
+                console.log('🎯 Routing logged-in user to dashboard');
+                if (device.isMobile) {
+                    window.location.href = 'html/dashboard-mobile.html';
+                } else {
+                    window.location.href = 'html/dashboard-desktop.html';
+                }
+            } else {
+                // User not logged in - go to landing page
+                console.log('🎯 Routing non-logged-in user to landing');
+                if (device.isMobile) {
+                    window.location.href = 'html/landing-mobile.html';
+                } else {
+                    window.location.href = 'html/landing-desktop.html';
+                }
+            }
+        }
+
+        // Initialize Firebase and check auth before routing
+        async function initializeAndRoute() {
+            const device = detectDevice();
+            console.log('🚀 Starting auth-aware routing...');
+            
+            try {
+                // Initialize Firebase directly
+                const app = firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+                
+                // Set persistence
+                await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                console.log('✅ Firebase initialized for auth check');
+
+                // Check if user is already logged in
+                if (auth.currentUser) {
+                    console.log('👤 Current user found:', auth.currentUser.email);
+                    routeUser(true, device);
+                    return;
+                }
+
+                // Wait for auth state to be determined
+                console.log('⏳ Waiting for auth state...');
+                let authResolved = false;
+                
+                const unsubscribe = auth.onAuthStateChanged((user) => {
+                    if (authResolved) return;
+                    authResolved = true;
+                    unsubscribe();
+                    
+                    console.log('🔄 Auth state determined:', user ? 'Logged in' : 'Not logged in');
+                    if (user) {
+                        console.log('👤 User email:', user.email);
+                    }
+                    routeUser(!!user, device);
+                });
+
+                // Timeout after 1.5 seconds
+                setTimeout(() => {
+                    if (!authResolved) {
+                        console.log('⏰ Auth timeout - defaulting to landing');
+                        authResolved = true;
+                        unsubscribe();
+                        routeUser(false, device);
+                    }
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ Firebase error:', error);
+                // On error, default to landing page
+                routeUser(false, device);
+            }
+        }
+
+        // Start initialization immediately
+        initializeAndRoute();
+    </script>
+</body>
+</html>

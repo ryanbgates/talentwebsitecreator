@@ -1,0 +1,82 @@
+<!-- Authentication Modal System -->
+<!-- This component can be included on any page for login/register functionality -->
+
+<section class="auth-section" id="authSection" style="display: none;">
+    <!-- Login Container -->
+    <div class="auth-container" id="loginContainer">
+        <div class="auth-message">
+            <h1>Welcome Back</h1>
+            <p>Sign in to your account</p>
+        </div>
+        
+        <form class="auth-form" id="loginForm">
+            <div class="input-group">
+                <input type="text" id="loginEmail" required placeholder="Username or Email Address">
+            </div>
+            <div class="input-group">
+                <input type="password" id="loginPassword" required placeholder="Password">
+            </div>
+            
+            <div class="auth-actions">
+                <button type="submit" class="btn btn-primary auth-btn">Sign In</button>
+                <button type="button" class="btn btn-text" onclick="showForgotPassword()">Forgot Password?</button>
+            </div>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <button type="button" class="btn-link" onclick="showCreateAccount()">Create one here</button></p>
+        </div>
+        
+        <button class="close-auth-btn" onclick="hideAuthSection()">&times;</button>
+    </div>
+
+    <!-- Create Account Container -->
+    <div class="auth-container" id="createAccountContainer" style="display: none;">
+        <div class="auth-message">
+            <button class="back-btn" onclick="showLogin()">&larr;</button>
+            <h1>Create Your Account</h1>
+            <p>Start building your professional presence</p>
+        </div>
+        
+        <form class="auth-form" id="createAccountForm">
+            <div class="input-group">
+                <input type="text" id="createUsername" required placeholder="Username">
+            </div>
+            <div class="input-group">
+                <input type="email" id="createEmail" required placeholder="Email Address">
+            </div>
+            <div class="input-group">
+                <input type="tel" id="createPhone" required placeholder="Phone Number (e.g., +1-555-123-4567)">
+            </div>
+            <div class="input-group">
+                <input type="password" id="createPassword" required placeholder="Password">
+            </div>
+            <div class="input-group">
+                <input type="password" id="confirmPassword" required placeholder="Confirm Password">
+            </div>
+            
+            <div class="auth-actions">
+                <button type="submit" class="btn btn-primary auth-btn">Create Account</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Forgot Password Container -->
+    <div class="auth-container" id="forgotPasswordContainer" style="display: none;">
+        <div class="auth-message">
+            <button class="back-btn" onclick="showLogin()">&larr;</button>
+            <h1>Reset Password</h1>
+            <p>Enter your email to receive a password reset link</p>
+        </div>
+        
+        <form class="auth-form" id="forgotPasswordForm">
+            <div class="input-group">
+                <input type="email" id="resetEmail" required placeholder="Email Address">
+            </div>
+            
+            <div class="auth-actions">
+                <button type="submit" class="btn btn-primary auth-btn">Send Reset Link</button>
+            </div>
+        </form>
+    </div>
+</section>
