@@ -202,6 +202,49 @@
     transform: none !important;
 }
 
+/* Email Verification Success Message */
+.auth-message-verification {
+    margin: 1rem 0;
+}
+
+.verification-box {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.verification-box h2 {
+    color: #155724;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+}
+
+.verification-box p {
+    color: #155724;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+
+.verification-box p:last-child {
+    margin-bottom: 0;
+}
+
+.verification-box a {
+    color: #155724;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.verification-box a:hover {
+    color: #0c4128;
+}
+
 .btn-text {
     background: none;
     border: none;

@@ -558,11 +558,11 @@ function showEmailVerificationSuccess(message) {
     const successDiv = document.createElement('div');
     successDiv.className = 'auth-message-verification';
     successDiv.innerHTML = `
-        <div style="color: #0c5460; background: #d1ecf1; padding: 15px; border-radius: 4px; margin: 10px 0; border: 1px solid #bee5eb;">
-            <strong>📧 Email Verification Required</strong>
-            <p style="margin: 8px 0 0 0;">${message}</p>
-            <p style="margin: 8px 0 0 0; font-size: 14px;">
-                <a href="javascript:void(0)" onclick="showLogin()" style="color: #0c5460; text-decoration: underline;">
+        <div class="verification-box">
+            <h2>✓ Verification Email Sent!</h2>
+            <p>Please check your email and click the verification link before logging in.</p>
+            <p>
+                <a href="javascript:void(0)" onclick="showLogin()">
                     Return to Login
                 </a>
             </p>
