@@ -2925,6 +2925,9 @@ async function submitWebsiteRequest() {
             console.log('✅ Website information submitted successfully');
             // Reset flag before redirect
             isSubmitting = false;
+            // Clear pending edit session storage to prevent form from reopening
+            sessionStorage.removeItem('pendingEditWebsite');
+            console.log('🧹 Cleared pendingEditWebsite from sessionStorage');
             returnToMyWebsites();
         }, 1500);
         
@@ -3194,6 +3197,9 @@ function viewSamplesInOverlay() {
 function returnToMyWebsites() {
     window.mobileDebug('← Returning to My Websites main view');
     console.log('← Returning to My Websites main view');
+    
+    // Defensive cleanup: Clear pending edit session storage
+    sessionStorage.removeItem('pendingEditWebsite');
     
     // Restore body scrolling
     document.body.style.overflow = '';
