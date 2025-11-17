@@ -10,12 +10,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Auth Only) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <!-- CSS -->
     <link rel="stylesheet" href="../css/email-action-handler.css">
+    
+    <!-- Initialize Firebase Auth Only (lightweight for this page) -->
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWJ6v5ASvFEkaPSTKZ2JdGfxgefc0gAoo",
+            authDomain: "talentwebsitecreator-8356b.firebaseapp.com",
+            projectId: "talentwebsitecreator-8356b",
+            storageBucket: "talentwebsitecreator-8356b.firebasestorage.app",
+            messagingSenderId: "217557398927",
+            appId: "1:217557398927:web:e3a0ad1c283f66035e07fa",
+            measurementId: "G-1NXM6B8TZW"
+        };
+        
+        // Initialize Firebase (Auth only for this page)
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // Export for email handler
+        window.FirebaseServices = {
+            app: app,
+            auth: auth,
+            isInitialized: function() {
+                return !!(app && auth);
+            }
+        };
+        
+        console.log('✅ Firebase Auth initialized for email action handler');
+    </script>
 </head>
 <body>
     <div class="container">
@@ -76,9 +105,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Firebase Config -->
-    <script src="../js/firebase-config.js"></script>
     
     <!-- Email Action Handler Script -->
     <script src="../js/email-action-handler.js"></script>
