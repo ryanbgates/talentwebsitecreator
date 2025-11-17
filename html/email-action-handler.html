@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Talent Website Creator</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/email-action-handler.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content-box">
+            <!-- Logo/Brand -->
+            <div class="brand">
+                <h1>Talent Website Creator</h1>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="state-container">
+                <div class="spinner"></div>
+                <h2>Processing...</h2>
+                <p>Please wait while we verify your email address.</p>
+            </div>
+            
+            <!-- Success State - Email Verified -->
+            <div id="successState" class="state-container" style="display: none;">
+                <div class="icon success-icon">✓</div>
+                <h2>Email Verified Successfully!</h2>
+                <p>Your email has been verified. You can now sign in to your account.</p>
+                <button onclick="redirectToLogin()" class="btn btn-primary">Go to Login</button>
+            </div>
+            
+            <!-- Error State -->
+            <div id="errorState" class="state-container" style="display: none;">
+                <div class="icon error-icon">✕</div>
+                <h2>Verification Failed</h2>
+                <p id="errorMessage">An error occurred while verifying your email.</p>
+                <button onclick="redirectToHome()" class="btn btn-secondary">Return to Home</button>
+            </div>
+            
+            <!-- Password Reset State -->
+            <div id="resetPasswordState" class="state-container" style="display: none;">
+                <div class="icon info-icon">🔒</div>
+                <h2>Reset Your Password</h2>
+                <p>Enter your new password below.</p>
+                
+                <form id="resetPasswordForm">
+                    <div class="input-group">
+                        <input type="password" id="newPassword" placeholder="New Password" required minlength="6">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Reset Password</button>
+                </form>
+                
+                <p id="resetMessage" class="message" style="display: none;"></p>
+            </div>
+            
+            <!-- Password Reset Success State -->
+            <div id="resetSuccessState" class="state-container" style="display: none;">
+                <div class="icon success-icon">✓</div>
+                <h2>Password Reset Successfully!</h2>
+                <p>Your password has been updated. You can now sign in with your new password.</p>
+                <button onclick="redirectToLogin()" class="btn btn-primary">Go to Login</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase Config -->
+    <script src="../js/firebase-config.js"></script>
+    
+    <!-- Email Action Handler Script -->
+    <script src="../js/email-action-handler.js"></script>
+</body>
+</html>
