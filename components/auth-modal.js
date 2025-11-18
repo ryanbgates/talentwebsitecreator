@@ -533,7 +533,12 @@ function showAuthSuccess(message) {
     
     const successDiv = document.createElement('div');
     successDiv.className = 'auth-message-success';
-    successDiv.innerHTML = `<p style="color: #155724; background: #d4edda; padding: 10px; border-radius: 4px; margin: 10px 0; border: 1px solid #c3e6cb;">${message}</p>`;
+    successDiv.innerHTML = `
+        <p style="color: #155724; background: #d4edda; padding: 10px; border-radius: 4px; margin: 10px 0; border: 1px solid #c3e6cb;">
+            ${message}
+            <br><span style="font-size: 0.9rem; margin-top: 0.5rem; display: inline-block;"><strong>Note:</strong> The email may take 5-10 minutes to arrive. Please check your spam folder if you don't see it in your inbox.</span>
+        </p>
+    `;
     
     // Insert into current visible auth container
     const visibleContainer = document.querySelector('.auth-container[style*="block"], .auth-container:not([style*="none"])');
@@ -561,6 +566,7 @@ function showEmailVerificationSuccess(message) {
         <div class="verification-box">
             <h2>✓ Verification Email Sent!</h2>
             <p>Please check your email and click the verification link before logging in.</p>
+            <p style="font-size: 0.9rem; margin-top: 0.75rem;"><strong>Note:</strong> The email may take 5-10 minutes to arrive. Please check your spam folder if you don't see it in your inbox.</p>
             <p>
                 <a href="javascript:void(0)" onclick="showLogin()">
                     Return to Login
