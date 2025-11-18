@@ -8,6 +8,7 @@ class FirebaseAuthService {
         
         this.auth = null;
         this.db = null;
+        this.functions = null;
         this.currentUser = null;
         this.authStateCallbacks = [];
         this.freshLoginFlag = false; // Track fresh logins for redirect
@@ -36,9 +37,11 @@ class FirebaseAuthService {
         if (window.FirebaseServices && window.FirebaseServices.isInitialized()) {
             this.auth = window.FirebaseServices.auth;
             this.db = window.FirebaseServices.db;
+            this.functions = window.FirebaseServices.functions;
             
             console.log('🔐 Auth service assigned:', this.auth);
             console.log('🗄️ DB service assigned:', this.db);
+            console.log('⚡ Functions service assigned:', this.functions);
             
             // Set up auth state listener
             console.log('👂 Setting up auth state listener...');
