@@ -424,17 +424,18 @@ function initializeAuthModal() {
                 const result = await window.FirebaseAuth.sendPasswordReset(email);
                 
                 if (result.success) {
-                    showAuthSuccess('Password reset email sent! Check your inbox.');
-                    setTimeout(() => {
-                        showLogin(); // Go back to login form
-                    }, 2000);
+                    // Hide form elements and show success message
+                    showPasswordResetSuccess(result.message);
+                    // Don't auto-redirect - let user click back button
                 } else {
                     showAuthError(result.error);
+                    // Reset button state on error
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                 }
             } catch (error) {
                 showAuthError('An unexpected error occurred. Please try again.');
-            } finally {
-                // Reset button state
+                // Reset button state on error
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
@@ -535,8 +536,7 @@ function showAuthSuccess(message) {
     successDiv.className = 'auth-message-success';
     successDiv.innerHTML = `
         <p style="color: #155724; background: #d4edda; padding: 10px; border-radius: 4px; margin: 10px 0; border: 1px solid #c3e6cb;">
-            ${message}
-            <br><span style="font-size: 0.9rem; margin-top: 0.5rem; display: inline-block;"><strong>Note:</strong> The email may take 5-10 minutes to arrive. Please check your spam folder if you don't see it in your inbox.</span>
+            ${message} The email may take 5-10 minutes to arrive—check your spam folder if you don't see it.
         </p>
     `;
     
@@ -565,8 +565,7 @@ function showEmailVerificationSuccess(message) {
     successDiv.innerHTML = `
         <div class="verification-box">
             <h2>✓ Verification Email Sent!</h2>
-            <p>Please check your email and click the verification link before logging in.</p>
-            <p style="font-size: 0.9rem; margin-top: 0.75rem;"><strong>Note:</strong> The email may take 5-10 minutes to arrive. Please check your spam folder if you don't see it in your inbox.</p>
+            <p>Please check your email and click the verification link. The email may take 5-10 minutes to arrive—check your spam folder if you don't see it.</p>
             <p>
                 <a href="javascript:void(0)" onclick="showLogin()">
                     Return to Login
@@ -587,6 +586,41 @@ function showEmailVerificationSuccess(message) {
             buttons.forEach(button => button.style.display = 'none');
             
             // Insert verification message at the top
+            form.insertBefore(successDiv, form.firstChild);
+        }
+    }
+}
+
+// Show password reset success message after sending reset email
+function showPasswordResetSuccess(message) {
+    removeAuthMessages();
+    
+    const successDiv = document.createElement('div');
+    successDiv.className = 'auth-message-verification';
+    successDiv.innerHTML = `
+        <div class="verification-box">
+            <h2>✓ Password Reset Email Sent!</h2>
+            <p>${message} The email may take 5-10 minutes to arrive—check your spam folder if you don't see it.</p>
+            <p>
+                <a href="javascript:void(0)" onclick="showLogin()">
+                    Return to Login
+                </a>
+            </p>
+        </div>
+    `;
+    
+    const visibleContainer = document.querySelector('.auth-container[style*="block"], .auth-container:not([style*="none"])');
+    if (visibleContainer) {
+        const form = visibleContainer.querySelector('.auth-form');
+        if (form) {
+            // Hide all form inputs and buttons - only show the success message
+            const inputs = form.querySelectorAll('.input-group');
+            const buttons = form.querySelectorAll('.auth-actions');
+            
+            inputs.forEach(input => input.style.display = 'none');
+            buttons.forEach(button => button.style.display = 'none');
+            
+            // Insert success message at the top
             form.insertBefore(successDiv, form.firstChild);
         }
     }
@@ -649,6 +683,7 @@ async function resendVerificationEmail(email, password) {
 
 // Make functions globally available
 window.showEmailVerificationSuccess = showEmailVerificationSuccess;
+window.showPasswordResetSuccess = showPasswordResetSuccess;
 window.showEmailVerificationMessage = showEmailVerificationMessage;
 window.resendVerificationEmail = resendVerificationEmail;
 
@@ -666,6 +701,7 @@ if (typeof module !== 'undefined' && module.exports) {
         showAuthError,
         showAuthSuccess,
         showEmailVerificationSuccess,
+        showPasswordResetSuccess,
         showEmailVerificationMessage,
         resendVerificationEmail,
         clearAllForms
