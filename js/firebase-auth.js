@@ -215,10 +215,14 @@ class FirebaseAuthService {
             console.log('📧 Sending custom verification email via SendGrid...');
             try {
                 const sendCustomVerificationEmail = this.functions.httpsCallable('sendCustomVerificationEmail');
-                await sendCustomVerificationEmail({ displayName: displayName || email });
+                const result = await sendCustomVerificationEmail({ displayName: displayName || email });
                 console.log('✅ Custom verification email sent via SendGrid');
+                console.log('Function result:', result);
             } catch (emailError) {
                 console.error('⚠️ Error sending verification email:', emailError);
+                console.error('Error code:', emailError.code);
+                console.error('Error message:', emailError.message);
+                console.error('Error details:', emailError.details);
                 // Continue anyway - user can request resend later
             }
 
