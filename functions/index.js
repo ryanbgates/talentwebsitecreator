@@ -1309,6 +1309,25 @@ exports.sendCustomVerificationEmail = onCall(async (request) => {
             If you didn't create an account with Talent Website Creator, you can safely ignore this email.
           </p>
         </div>
+      `,
+      text: `
+Welcome to Talent Website Creator!
+
+Hi ${displayName},
+
+Thank you for creating an account! We're excited to help you build your professional portfolio website.
+
+Please verify your email address by clicking the link below or copying and pasting it into your browser:
+
+${verificationLink}
+
+This link will expire in 24 hours.
+
+If you didn't create an account with Talent Website Creator, you can safely ignore this email.
+
+---
+Talent Website Creator
+https://talentwebsitecreator.com
       `
     };
     
@@ -1462,9 +1481,28 @@ exports.sendCustomPasswordResetEmail = onCall(async (request) => {
           <hr style="border: none; border-top: 1px solid #eeeeee; margin: 30px 0;">
           
           <p style="color: #999999; font-size: 12px; line-height: 1.6;">
-            If you didn't request a password reset, you can safely ignore this email. Your password will not be changed.
+            If you didn't request this password reset, you can safely ignore this email.
           </p>
         </div>
+      `,
+      text: `
+Reset Your Password
+
+Hello,
+
+You requested to reset your password for your Talent Website Creator account. No problem!
+
+Click the link below or copy and paste it into your browser to create a new password:
+
+${resetLink}
+
+This link will expire in 1 hour.
+
+If you didn't request this password reset, you can safely ignore this email.
+
+---
+Talent Website Creator
+https://talentwebsitecreator.com
       `
     };
     
