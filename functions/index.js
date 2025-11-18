@@ -1253,7 +1253,7 @@ exports.sendCustomVerificationEmail = onCall(async (request) => {
     });
     
     // Create verification link
-    const verificationLink = `https://talentwebsitecreator.com/email-action-handler.html?mode=verifyEmail&token=${token}`;
+    const verificationLink = `https://talentwebsitecreator.com/html/email-action-handler.html?mode=verifyEmail&token=${token}`;
     
     // Set SendGrid API key
     const sendgridKey = process.env.SENDGRID_API_KEY || functions.config().sendgrid?.api_key;
