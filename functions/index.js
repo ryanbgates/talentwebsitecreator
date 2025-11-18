@@ -1221,3 +1221,109 @@ exports.createSetupIntent = onCall(async (request) => {
     throw new functions.https.HttpsError('internal', error.message);
   }
 });
+
+// SendGrid Email Service
+const sgMail = require('@sendgrid/mail');
+
+// Send custom verification email via SendGrid
+exports.sendVerificationEmail = onCall(async (request) => {
+  console.log('sendVerificationEmail called');
+  
+  const { email, displayName, actionLink } = request.data;
+  
+  if (!email || !actionLink) {
+    throw new functions.https.HttpsError('invalid-argument', 'Email and action link required');
+  }
+  
+  try {
+    // Set SendGrid API key
+    const sendgridKey = process.env.SENDGRID_API_KEY || functions.config().sendgrid?.api_key;
+    if (!sendgridKey) {
+      throw new Error('SendGrid API key not configured');
+    }
+    sgMail.setApiKey(sendgridKey);
+    
+    // Email content
+    const msg = {
+      to: email,
+      from: {
+        email: 'noreply@talentwebsitecreator.com',
+        name: 'Talent Website Creator'
+      },
+      replyTo: 'talentwebsitecreator@gmail.com',
+      subject: 'Welcome to Talent Website Creator - Verify Your Email ✅',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #000000; margin-bottom: 20px;">Welcome to Talent Website Creator!</h2>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Hi ${displayName || email},
+          </p>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Thank you for creating an account! We're excited to help you build your professional portfolio website.
+          </p>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Please verify your email address by clicking the button below:
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${actionLink}" style="background-color: #000000; color: #ffffff; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: bold; display: inline-block;">
+              Verify Your Email
+            </a>
+          </div>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6;">
+            Or copy and paste this link into your browser:<br>
+            <a href="${actionLink}" style="color: #000000; word-break: break-all;">${actionLink}</a>
+          </p>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
+            This verification link will expire in 24 hours.
+          </p>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6;">
+            If you didn't create this account, you can safely ignore this email.
+          </p>
+          
+          <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 30px 0;">
+          
+          <p style="color: #999999; font-size: 12px;">
+            Questions? Contact us at <a href="mailto:talentwebsitecreator@gmail.com" style="color: #000000;">talentwebsitecreator@gmail.com</a>
+          </p>
+          
+          <p style="color: #999999; font-size: 12px;">
+            © 2025 Talent Website Creator. All rights reserved.
+          </p>
+        </div>
+      `,
+      text: `
+Welcome to Talent Website Creator!
+
+Hi ${displayName || email},
+
+Thank you for creating an account! Please verify your email address by clicking the link below:
+
+${actionLink}
+
+This link will expire in 24 hours.
+
+If you didn't create this account, you can safely ignore this email.
+
+Questions? Contact us at talentwebsitecreator@gmail.com
+
+© 2025 Talent Website Creator
+      `
+    };
+    
+    await sgMail.send(msg);
+    console.log('✅ Verification email sent successfully to:', email);
+    
+    return { success: true };
+    
+  } catch (error) {
+    console.error('❌ Error sending verification email:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
