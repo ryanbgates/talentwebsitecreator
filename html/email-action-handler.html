@@ -13,6 +13,7 @@
     <!-- Firebase SDK (Auth Only) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
     
     <!-- CSS -->
     <link rel="stylesheet" href="../css/email-action-handler.css">
@@ -33,13 +34,15 @@
         // Initialize Firebase (Auth only for this page)
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const functions = firebase.app().functions();
         
         // Export for email handler
         window.FirebaseServices = {
             app: app,
             auth: auth,
+            functions: functions,
             isInitialized: function() {
-                return !!(app && auth);
+                return !!(app && auth && functions);
             }
         };
         
