@@ -1426,21 +1426,21 @@ exports.sendCustomPasswordResetEmail = onCall(async (request) => {
         name: 'Talent Website Creator'
       },
       replyTo: 'talentwebsitecreator@gmail.com',
-      subject: 'Reset Your Password - Talent Website Creator',
+      subject: 'Password Reset for Talent Website Creator 🔐',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #000000; margin-bottom: 20px;">Password Reset Request</h2>
+          <h2 style="color: #000000; margin-bottom: 20px;">Reset Your Password</h2>
           
           <p style="color: #333333; font-size: 16px; line-height: 1.6;">
-            Hi,
+            Hello,
           </p>
           
           <p style="color: #333333; font-size: 16px; line-height: 1.6;">
-            We received a request to reset your password for your Talent Website Creator account.
+            You requested to reset your password for your Talent Website Creator account. No problem!
           </p>
           
           <p style="color: #333333; font-size: 16px; line-height: 1.6;">
-            Click the button below to reset your password:
+            Click the button below to create a new password:
           </p>
           
           <div style="text-align: center; margin: 30px 0;">
