@@ -425,7 +425,7 @@ function initializeAuthModal() {
                 
                 if (result.success) {
                     // Hide form elements and show success message
-                    showPasswordResetSuccess(result.message);
+                    showPasswordResetSuccess();
                     // Don't auto-redirect - let user click back button
                 } else {
                     showAuthError(result.error);
@@ -592,7 +592,7 @@ function showEmailVerificationSuccess(message) {
 }
 
 // Show password reset success message after sending reset email
-function showPasswordResetSuccess(message) {
+function showPasswordResetSuccess() {
     removeAuthMessages();
     
     const successDiv = document.createElement('div');
@@ -600,7 +600,7 @@ function showPasswordResetSuccess(message) {
     successDiv.innerHTML = `
         <div class="verification-box">
             <h2>✓ Password Reset Email Sent!</h2>
-            <p>${message} The email may take 5-10 minutes to arrive—check your spam folder if you don't see it.</p>
+            <p>The email may take 5-10 minutes to arrive—check your spam folder if you don't see it.</p>
             <p>
                 <a href="javascript:void(0)" onclick="showLogin()">
                     Return to Login
