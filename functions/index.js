@@ -1271,6 +1271,11 @@ exports.sendCustomVerificationEmail = onCall(async (request) => {
       },
       replyTo: 'talentwebsitecreator@gmail.com',
       subject: 'Welcome to Talent Website Creator - Verify Your Email ✅',
+      trackingSettings: {
+        clickTracking: {
+          enable: false
+        }
+      },
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #000000; margin-bottom: 20px;">Welcome to Talent Website Creator!</h2>
@@ -1446,6 +1451,11 @@ exports.sendCustomPasswordResetEmail = onCall(async (request) => {
       },
       replyTo: 'talentwebsitecreator@gmail.com',
       subject: 'Password Reset for Talent Website Creator 🔐',
+      trackingSettings: {
+        clickTracking: {
+          enable: false
+        }
+      },
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #000000; margin-bottom: 20px;">Reset Your Password</h2>
@@ -1599,6 +1609,11 @@ exports.sendVerificationEmail = onCall(async (request) => {
       },
       replyTo: 'talentwebsitecreator@gmail.com',
       subject: 'Welcome to Talent Website Creator - Verify Your Email ✅',
+      trackingSettings: {
+        clickTracking: {
+          enable: false
+        }
+      },
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #000000; margin-bottom: 20px;">Welcome to Talent Website Creator!</h2>
