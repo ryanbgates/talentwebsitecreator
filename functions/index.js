@@ -1224,8 +1224,157 @@ exports.createSetupIntent = onCall(async (request) => {
 
 // SendGrid Email Service
 const sgMail = require('@sendgrid/mail');
+const crypto = require('crypto');
 
-// Send custom verification email via SendGrid
+// Generate custom verification token and send email
+exports.sendCustomVerificationEmail = onCall(async (request) => {
+  console.log('sendCustomVerificationEmail called');
+  
+  if (!request.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+  }
+  
+  const userId = request.auth.uid;
+  const email = request.auth.token.email;
+  const displayName = request.data.displayName || email;
+  
+  try {
+    // Generate secure random token
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours from now
+    
+    // Store token in Firestore
+    await admin.firestore().collection('verificationTokens').doc(token).set({
+      userId: userId,
+      email: email,
+      createdAt: Date.now(),
+      expiresAt: expiresAt,
+      used: false
+    });
+    
+    // Create verification link
+    const verificationLink = `https://talentwebsitecreator.com/email-action-handler.html?mode=verifyEmail&token=${token}`;
+    
+    // Set SendGrid API key
+    const sendgridKey = process.env.SENDGRID_API_KEY || functions.config().sendgrid?.api_key;
+    if (!sendgridKey) {
+      throw new Error('SendGrid API key not configured');
+    }
+    sgMail.setApiKey(sendgridKey);
+    
+    // Send email via SendGrid
+    const msg = {
+      to: email,
+      from: {
+        email: 'noreply@talentwebsitecreator.com',
+        name: 'Talent Website Creator'
+      },
+      replyTo: 'talentwebsitecreator@gmail.com',
+      subject: 'Welcome to Talent Website Creator - Verify Your Email ✅',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #000000; margin-bottom: 20px;">Welcome to Talent Website Creator!</h2>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Hi ${displayName},
+          </p>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Thank you for creating an account! We're excited to help you build your professional portfolio website.
+          </p>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Please verify your email address by clicking the button below:
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${verificationLink}" 
+               style="background-color: #000000; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 6px; display: inline-block; font-size: 16px; font-weight: 600;">
+              Verify Email Address
+            </a>
+          </div>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
+            Or copy and paste this link into your browser:<br>
+            <a href="${verificationLink}" style="color: #000000; word-break: break-all;">${verificationLink}</a>
+          </p>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
+            This link will expire in 24 hours.
+          </p>
+          
+          <hr style="border: none; border-top: 1px solid #eeeeee; margin: 30px 0;">
+          
+          <p style="color: #999999; font-size: 12px; line-height: 1.6;">
+            If you didn't create an account with Talent Website Creator, you can safely ignore this email.
+          </p>
+        </div>
+      `
+    };
+    
+    await sgMail.send(msg);
+    console.log('Verification email sent successfully to:', email);
+    
+    return { success: true, message: 'Verification email sent' };
+    
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
+
+// Verify custom token
+exports.verifyCustomToken = onCall(async (request) => {
+  console.log('verifyCustomToken called');
+  
+  const { token } = request.data;
+  
+  if (!token) {
+    throw new functions.https.HttpsError('invalid-argument', 'Token required');
+  }
+  
+  try {
+    // Get token from Firestore
+    const tokenDoc = await admin.firestore().collection('verificationTokens').doc(token).get();
+    
+    if (!tokenDoc.exists) {
+      throw new functions.https.HttpsError('not-found', 'Invalid verification link');
+    }
+    
+    const tokenData = tokenDoc.data();
+    
+    // Check if token is expired
+    if (Date.now() > tokenData.expiresAt) {
+      throw new functions.https.HttpsError('deadline-exceeded', 'Verification link has expired');
+    }
+    
+    // Check if token already used
+    if (tokenData.used) {
+      throw new functions.https.HttpsError('already-exists', 'Verification link has already been used');
+    }
+    
+    // Mark token as used
+    await admin.firestore().collection('verificationTokens').doc(token).update({
+      used: true,
+      usedAt: Date.now()
+    });
+    
+    // Verify the user's email in Firebase Auth
+    await admin.auth().updateUser(tokenData.userId, {
+      emailVerified: true
+    });
+    
+    console.log('Email verified successfully for user:', tokenData.userId);
+    
+    return { success: true, message: 'Email verified successfully' };
+    
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
+
+// Old function - keeping for backwards compatibility
 exports.sendVerificationEmail = onCall(async (request) => {
   console.log('sendVerificationEmail called');
   

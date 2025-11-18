@@ -205,13 +205,19 @@ class FirebaseAuthService {
                 });
             }
 
-            // Send email verification
-            console.log('📧 Sending email verification...');
-            await user.sendEmailVerification();
-            console.log('✅ Email verification sent');
-
-            // Create user document in Firestore (emailVerified handled by Firebase Auth)
+            // Create user document in Firestore first
             await this.createUserDocument(user, { displayName, phoneNumber: normalizedPhone });
+
+            // Send custom verification email via SendGrid
+            console.log('📧 Sending custom verification email via SendGrid...');
+            try {
+                const sendCustomVerificationEmail = this.functions.httpsCallable('sendCustomVerificationEmail');
+                await sendCustomVerificationEmail({ displayName: displayName || email });
+                console.log('✅ Custom verification email sent via SendGrid');
+            } catch (emailError) {
+                console.error('⚠️ Error sending verification email:', emailError);
+                // Continue anyway - user can request resend later
+            }
 
             // Sign out the user immediately after signup - they need to verify email first
             await this.auth.signOut();
@@ -475,9 +481,17 @@ class FirebaseAuthService {
                 return { success: false, error: 'Email is already verified. Please try logging in.' };
             }
 
-            // Send verification email
-            await user.sendEmailVerification();
-            console.log('✅ Email verification resent');
+            // Send custom verification email via SendGrid
+            try {
+                const displayName = user.displayName || email;
+                const sendCustomVerificationEmail = this.functions.httpsCallable('sendCustomVerificationEmail');
+                await sendCustomVerificationEmail({ displayName });
+                console.log('✅ Custom verification email resent via SendGrid');
+            } catch (emailError) {
+                console.error('⚠️ Error resending verification email:', emailError);
+                await this.auth.signOut();
+                return { success: false, error: 'Failed to send verification email. Please try again.' };
+            }
 
             // Sign out immediately
             await this.auth.signOut();

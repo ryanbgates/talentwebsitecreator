@@ -53,37 +53,56 @@ function showError(message) {
 }
 
 // Handle email verification
-async function handleVerifyEmail(auth, actionCode) {
+async function handleVerifyEmail(auth, actionCode, customToken) {
     console.log('🔵 Handling email verification');
     
     try {
-        // Apply the action code (verify email)
-        await auth.applyActionCode(actionCode);
-        console.log('✅ Email verified successfully');
-        
-        // Show success state
-        showState('successState');
+        // If we have a custom token, use our custom verification
+        if (customToken) {
+            console.log('🔵 Using custom token verification');
+            const functions = window.FirebaseServices.functions;
+            const verifyCustomToken = functions.httpsCallable('verifyCustomToken');
+            
+            const result = await verifyCustomToken({ token: customToken });
+            
+            if (result.data.success) {
+                console.log('✅ Email verified successfully with custom token');
+                showState('successState');
+            } else {
+                throw new Error(result.data.message || 'Verification failed');
+            }
+        } else if (actionCode) {
+            // Use Firebase's default verification (backwards compatibility)
+            console.log('🔵 Using Firebase default verification');
+            await auth.applyActionCode(actionCode);
+            console.log('✅ Email verified successfully');
+            showState('successState');
+        } else {
+            throw new Error('No verification token provided');
+        }
         
     } catch (error) {
         console.error('❌ Email verification error:', error);
         
         let errorMessage = 'Unable to verify your email. ';
         
-        switch (error.code) {
-            case 'auth/expired-action-code':
-                errorMessage += 'The verification link has expired. Please request a new one.';
-                break;
-            case 'auth/invalid-action-code':
-                errorMessage += 'The verification link is invalid or has already been used.';
-                break;
-            case 'auth/user-disabled':
-                errorMessage += 'This account has been disabled.';
-                break;
-            case 'auth/user-not-found':
-                errorMessage += 'No account found with this email address.';
-                break;
-            default:
-                errorMessage += error.message;
+        // Handle custom token errors
+        if (error.code === 'not-found') {
+            errorMessage += 'The verification link is invalid.';
+        } else if (error.code === 'deadline-exceeded') {
+            errorMessage += 'The verification link has expired. Please request a new one.';
+        } else if (error.code === 'already-exists') {
+            errorMessage += 'The verification link has already been used.';
+        } else if (error.code === 'auth/expired-action-code') {
+            errorMessage += 'The verification link has expired. Please request a new one.';
+        } else if (error.code === 'auth/invalid-action-code') {
+            errorMessage += 'The verification link is invalid or has already been used.';
+        } else if (error.code === 'auth/user-disabled') {
+            errorMessage += 'This account has been disabled.';
+        } else if (error.code === 'auth/user-not-found') {
+            errorMessage += 'No account found with this email address.';
+        } else {
+            errorMessage += error.message;
         }
         
         showError(errorMessage);
@@ -245,13 +264,15 @@ async function handleEmailAction() {
     // Get action parameters from URL
     const mode = getParameterByName('mode');
     const actionCode = getParameterByName('oobCode');
+    const customToken = getParameterByName('token'); // Our custom token
     
     console.log('🔍 Action mode:', mode);
     console.log('🔍 Action code:', actionCode ? 'Present' : 'Missing');
+    console.log('🔍 Custom token:', customToken ? 'Present' : 'Missing');
     
-    // Validate action code
-    if (!actionCode) {
-        console.error('❌ No action code provided');
+    // Validate we have at least one token
+    if (!actionCode && !customToken) {
+        console.error('❌ No action code or custom token provided');
         showError('Invalid or missing verification link. Please check the link in your email.');
         return;
     }
@@ -259,7 +280,7 @@ async function handleEmailAction() {
     // Handle different action modes
     switch (mode) {
         case 'verifyEmail':
-            await handleVerifyEmail(auth, actionCode);
+            await handleVerifyEmail(auth, actionCode, customToken);
             break;
             
         case 'resetPassword':
