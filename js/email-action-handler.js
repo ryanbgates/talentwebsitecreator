@@ -126,6 +126,12 @@ async function handleResetPassword(auth, actionCode, customToken) {
                 const newPassword = document.getElementById('newPassword').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
                 const messageElement = document.getElementById('resetMessage');
+                const submitButton = form.querySelector('button[type="submit"]');
+                
+                // Prevent double submission
+                if (submitButton.disabled) {
+                    return;
+                }
                 
                 // Validate passwords match
                 if (newPassword !== confirmPassword) {
@@ -142,6 +148,11 @@ async function handleResetPassword(auth, actionCode, customToken) {
                     messageElement.style.display = 'block';
                     return;
                 }
+                
+                // Disable button and show loading state
+                submitButton.disabled = true;
+                submitButton.textContent = 'Resetting Password...';
+                messageElement.style.display = 'none';
                 
                 try {
                     // Use custom token if available, otherwise use Firebase's default
@@ -189,6 +200,10 @@ async function handleResetPassword(auth, actionCode, customToken) {
                     messageElement.textContent = errorMessage;
                     messageElement.className = 'message error';
                     messageElement.style.display = 'block';
+                    
+                    // Re-enable button on error
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Reset Password';
                 }
             };
         }
