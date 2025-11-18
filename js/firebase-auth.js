@@ -450,8 +450,12 @@ class FirebaseAuthService {
     async sendPasswordReset(email) {
         try {
             console.log('🔄 Sending password reset to:', email);
-            await this.auth.sendPasswordResetEmail(email);
-            console.log('✅ Password reset email sent');
+            
+            // Use custom SendGrid password reset
+            const sendCustomPasswordResetEmail = this.functions.httpsCallable('sendCustomPasswordResetEmail');
+            const result = await sendCustomPasswordResetEmail({ email });
+            
+            console.log('✅ Password reset email sent via SendGrid');
             return { success: true };
         } catch (error) {
             console.error('❌ Password reset error:', error);

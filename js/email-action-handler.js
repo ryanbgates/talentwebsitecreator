@@ -110,15 +110,11 @@ async function handleVerifyEmail(auth, actionCode, customToken) {
 }
 
 // Handle password reset
-async function handleResetPassword(auth, actionCode) {
+async function handleResetPassword(auth, actionCode, customToken) {
     console.log('🔵 Handling password reset');
     
     try {
-        // Verify the password reset code is valid
-        await auth.verifyPasswordResetCode(actionCode);
-        console.log('✅ Password reset code verified');
-        
-        // Show password reset form
+        // Show password reset form immediately (we'll validate token on submission)
         showState('resetPasswordState');
         
         // Handle form submission
@@ -148,30 +144,46 @@ async function handleResetPassword(auth, actionCode) {
                 }
                 
                 try {
-                    // Confirm password reset
-                    await auth.confirmPasswordReset(actionCode, newPassword);
-                    console.log('✅ Password reset successfully');
-                    
-                    // Show success state
-                    showState('resetSuccessState');
+                    // Use custom token if available, otherwise use Firebase's default
+                    if (customToken) {
+                        console.log('🔵 Using custom token password reset');
+                        const functions = window.FirebaseServices.functions;
+                        const verifyPasswordResetToken = functions.httpsCallable('verifyPasswordResetToken');
+                        
+                        const result = await verifyPasswordResetToken({ 
+                            token: customToken, 
+                            newPassword: newPassword 
+                        });
+                        
+                        if (result.data.success) {
+                            console.log('✅ Password reset successfully with custom token');
+                            showState('resetSuccessState');
+                        } else {
+                            throw new Error(result.data.message || 'Password reset failed');
+                        }
+                    } else if (actionCode) {
+                        // Use Firebase's default password reset
+                        console.log('🔵 Using Firebase default password reset');
+                        await auth.confirmPasswordReset(actionCode, newPassword);
+                        console.log('✅ Password reset successfully');
+                        showState('resetSuccessState');
+                    } else {
+                        throw new Error('No reset token provided');
+                    }
                     
                 } catch (error) {
                     console.error('❌ Password reset error:', error);
                     
                     let errorMessage = 'Failed to reset password. ';
                     
-                    switch (error.code) {
-                        case 'auth/expired-action-code':
-                            errorMessage += 'The reset link has expired. Please request a new one.';
-                            break;
-                        case 'auth/invalid-action-code':
-                            errorMessage += 'The reset link is invalid or has already been used.';
-                            break;
-                        case 'auth/weak-password':
-                            errorMessage += 'Password is too weak. Please use a stronger password.';
-                            break;
-                        default:
-                            errorMessage += error.message;
+                    if (error.code === 'auth/expired-action-code') {
+                        errorMessage += 'The reset link has expired. Please request a new one.';
+                    } else if (error.code === 'auth/invalid-action-code') {
+                        errorMessage += 'The reset link is invalid or has already been used.';
+                    } else if (error.code === 'auth/weak-password') {
+                        errorMessage += 'Password is too weak. Please use a stronger password.';
+                    } else {
+                        errorMessage += error.message;
                     }
                     
                     messageElement.textContent = errorMessage;
@@ -186,15 +198,12 @@ async function handleResetPassword(auth, actionCode) {
         
         let errorMessage = 'Unable to reset password. ';
         
-        switch (error.code) {
-            case 'auth/expired-action-code':
-                errorMessage += 'The reset link has expired. Please request a new one.';
-                break;
-            case 'auth/invalid-action-code':
-                errorMessage += 'The reset link is invalid or has already been used.';
-                break;
-            default:
-                errorMessage += error.message;
+        if (error.code === 'auth/expired-action-code') {
+            errorMessage += 'The reset link has expired. Please request a new one.';
+        } else if (error.code === 'auth/invalid-action-code') {
+            errorMessage += 'The reset link is invalid or has already been used.';
+        } else {
+            errorMessage += error.message;
         }
         
         showError(errorMessage);
@@ -284,7 +293,7 @@ async function handleEmailAction() {
             break;
             
         case 'resetPassword':
-            await handleResetPassword(auth, actionCode);
+            await handleResetPassword(auth, actionCode, customToken);
             break;
             
         case 'recoverEmail':

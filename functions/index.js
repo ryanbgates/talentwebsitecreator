@@ -1374,6 +1374,166 @@ exports.verifyCustomToken = onCall(async (request) => {
   }
 });
 
+// Send custom password reset email
+exports.sendCustomPasswordResetEmail = onCall(async (request) => {
+  console.log('sendCustomPasswordResetEmail called');
+  
+  const { email } = request.data;
+  
+  if (!email) {
+    throw new functions.https.HttpsError('invalid-argument', 'Email required');
+  }
+  
+  try {
+    // Check if user exists
+    let user;
+    try {
+      user = await admin.auth().getUserByEmail(email);
+    } catch (error) {
+      // Don't reveal if user exists or not for security
+      console.log('User not found for password reset:', email);
+      return { success: true, message: 'If an account exists, password reset email sent' };
+    }
+    
+    // Generate secure random token
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + (1 * 60 * 60 * 1000); // 1 hour from now
+    
+    // Store token in Firestore
+    await admin.firestore().collection('passwordResetTokens').doc(token).set({
+      userId: user.uid,
+      email: email,
+      createdAt: Date.now(),
+      expiresAt: expiresAt,
+      used: false
+    });
+    
+    // Create reset link
+    const resetLink = `https://talentwebsitecreator.com/html/email-action-handler.html?mode=resetPassword&token=${token}`;
+    
+    // Set SendGrid API key
+    const sendgridKey = process.env.SENDGRID_API_KEY || functions.config().sendgrid?.api_key;
+    if (!sendgridKey) {
+      throw new Error('SendGrid API key not configured');
+    }
+    sgMail.setApiKey(sendgridKey);
+    
+    // Send email via SendGrid
+    const msg = {
+      to: email,
+      from: {
+        email: 'noreply@talentwebsitecreator.com',
+        name: 'Talent Website Creator'
+      },
+      replyTo: 'talentwebsitecreator@gmail.com',
+      subject: 'Reset Your Password - Talent Website Creator',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #000000; margin-bottom: 20px;">Password Reset Request</h2>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Hi,
+          </p>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            We received a request to reset your password for your Talent Website Creator account.
+          </p>
+          
+          <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+            Click the button below to reset your password:
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetLink}" 
+               style="background-color: #000000; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 6px; display: inline-block; font-size: 16px; font-weight: 600;">
+              Reset Password
+            </a>
+          </div>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
+            Or copy and paste this link into your browser:<br>
+            <a href="${resetLink}" style="color: #000000; word-break: break-all;">${resetLink}</a>
+          </p>
+          
+          <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-top: 30px;">
+            This link will expire in 1 hour.
+          </p>
+          
+          <hr style="border: none; border-top: 1px solid #eeeeee; margin: 30px 0;">
+          
+          <p style="color: #999999; font-size: 12px; line-height: 1.6;">
+            If you didn't request a password reset, you can safely ignore this email. Your password will not be changed.
+          </p>
+        </div>
+      `
+    };
+    
+    await sgMail.send(msg);
+    console.log('Password reset email sent successfully to:', email);
+    
+    return { success: true, message: 'If an account exists, password reset email sent' };
+    
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
+
+// Verify password reset token and update password
+exports.verifyPasswordResetToken = onCall(async (request) => {
+  console.log('verifyPasswordResetToken called');
+  
+  const { token, newPassword } = request.data;
+  
+  if (!token || !newPassword) {
+    throw new functions.https.HttpsError('invalid-argument', 'Token and new password required');
+  }
+  
+  if (newPassword.length < 6) {
+    throw new functions.https.HttpsError('invalid-argument', 'Password must be at least 6 characters');
+  }
+  
+  try {
+    // Get token from Firestore
+    const tokenDoc = await admin.firestore().collection('passwordResetTokens').doc(token).get();
+    
+    if (!tokenDoc.exists) {
+      throw new functions.https.HttpsError('not-found', 'Invalid password reset link');
+    }
+    
+    const tokenData = tokenDoc.data();
+    
+    // Check if token is expired
+    if (Date.now() > tokenData.expiresAt) {
+      throw new functions.https.HttpsError('deadline-exceeded', 'Password reset link has expired');
+    }
+    
+    // Check if token already used
+    if (tokenData.used) {
+      throw new functions.https.HttpsError('already-exists', 'Password reset link has already been used');
+    }
+    
+    // Mark token as used
+    await admin.firestore().collection('passwordResetTokens').doc(token).update({
+      used: true,
+      usedAt: Date.now()
+    });
+    
+    // Update the user's password in Firebase Auth
+    await admin.auth().updateUser(tokenData.userId, {
+      password: newPassword
+    });
+    
+    console.log('Password reset successfully for user:', tokenData.userId);
+    
+    return { success: true, message: 'Password reset successfully' };
+    
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
+
 // Old function - keeping for backwards compatibility
 exports.sendVerificationEmail = onCall(async (request) => {
   console.log('sendVerificationEmail called');
