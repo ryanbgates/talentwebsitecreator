@@ -1,0 +1,12 @@
+# robots.txt for talentwebsitecreator.com
+
+User-agent: *
+Allow: /
+
+# Disallow private/admin areas
+Disallow: /functions/
+Disallow: /node_modules/
+Disallow: /utils/
+
+# Sitemap location
+Sitemap: https://talentwebsitecreator.com/sitemap.xml
