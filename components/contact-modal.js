@@ -2,6 +2,7 @@
 class ContactModal {
     constructor() {
         this.modal = null;
+        this.handlersSetup = false;
     }
 
     async init() {
@@ -12,6 +13,31 @@ class ContactModal {
         
         this.modal = document.getElementById('contactModal');
         console.log('✅ Contact modal initialized:', !!this.modal);
+        
+        // Setup click handlers for contact items
+        this.setupClickHandlers();
+    }
+    
+    setupClickHandlers() {
+        if (this.handlersSetup) {
+            console.log('⚠️ Click handlers already setup');
+            return;
+        }
+        
+        const contactItems = document.querySelectorAll('.contact-info-item[data-copy-text]');
+        console.log('📞 Setting up click handlers for', contactItems.length, 'contact items');
+        
+        contactItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const textToCopy = item.getAttribute('data-copy-text');
+                const valueElement = item.querySelector('.contact-value');
+                this.copyToClipboard(textToCopy, valueElement);
+            });
+        });
+        
+        this.handlersSetup = true;
+        console.log('✅ Click handlers setup complete');
     }
     
     async waitForModal() {
@@ -42,6 +68,11 @@ class ContactModal {
         
         console.log('📞 Showing contact modal');
         this.modal.classList.add('active');
+        
+        // Ensure handlers are setup (in case init was called before HTML loaded)
+        if (!this.handlersSetup) {
+            this.setupClickHandlers();
+        }
     }
 
     hide() {
@@ -51,7 +82,7 @@ class ContactModal {
         this.modal.classList.remove('active');
     }
     
-    async copyToClipboard(text, buttonElement) {
+    async copyToClipboard(text, valueElement) {
         try {
             // Try modern clipboard API first
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -69,14 +100,14 @@ class ContactModal {
             }
             
             // Show "Copied!" feedback
-            const originalText = buttonElement.textContent;
-            buttonElement.textContent = '✓ Copied!';
-            buttonElement.classList.add('copied');
+            const originalText = valueElement.textContent;
+            valueElement.textContent = '✓ Copied!';
+            valueElement.classList.add('copied');
             
             // Reset after 2 seconds
             setTimeout(() => {
-                buttonElement.textContent = originalText;
-                buttonElement.classList.remove('copied');
+                valueElement.textContent = originalText;
+                valueElement.classList.remove('copied');
             }, 2000);
             
             console.log('✅ Copied to clipboard:', text);
