@@ -330,6 +330,21 @@ body {
     overflow: hidden;
     box-shadow: var(--shadow-hover);
     background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Desktop containers maintain 16:9 aspect ratio */
+.sample-video-container.desktop {
+    aspect-ratio: 16/9;
+    min-height: 337px; /* Fallback for 600px width */
+}
+
+/* Mobile containers maintain 9:16 aspect ratio */
+.sample-video-container.mobile {
+    aspect-ratio: 9/16;
+    min-height: 444px; /* Fallback for 250px width */
 }
 
 /* Visit Site Button */
@@ -386,9 +401,77 @@ body {
 
 .sample-video {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     border-radius: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: contain; /* Desktop videos show full content */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Mobile videos need cover to fill container and show top */
+.sample-video-container.mobile .sample-video {
+    object-fit: cover;
+    object-position: top center;
+}
+
+.sample-video.visible {
+    opacity: 1;
+}
+
+.sample-video.hidden {
+    opacity: 0;
+}
+
+/* Video Loading State */
+.video-loading-state {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    border-radius: 16px;
+    z-index: 10;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.video-loading-state.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #333;
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+.loading-text {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Biography Slide Isolation - Smaller gap, slightly larger images */

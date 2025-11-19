@@ -665,9 +665,31 @@ function loadVideoLazily(video, index, slideIndex) {
         }, 100);
         
     } else {
-        // Desktop: Full featured loading
+        // Desktop: Full featured loading with smooth transitions
         window.mobileDebug(`🖥️ Desktop video ${index + 1} loading`);
-        video.style.opacity = '1';
+        
+        // Start hidden for smooth transition
+        video.classList.add('hidden');
+        video.classList.remove('visible');
+        
+        let hasPlayedSuccessfully = false;
+        
+        video.addEventListener('loadeddata', function onLoaded() {
+            const loadTime = performance.now() - startTime;
+            window.mobileDebug(`✅ Desktop video ${index + 1} loaded (${loadTime.toFixed(1)}ms)`);
+            video.removeEventListener('loadeddata', onLoaded);
+            
+            // If video has played, show it now
+            if (hasPlayedSuccessfully && container) {
+                const loadingState = container.querySelector('.video-loading-state');
+                if (loadingState) {
+                    loadingState.classList.add('fade-out');
+                    setTimeout(() => loadingState.remove(), 300);
+                }
+                video.classList.remove('hidden');
+                setTimeout(() => video.classList.add('visible'), 50);
+            }
+        });
         
         // Ensure we have a source element with the correct src
         let sourceElement = video.querySelector('source');
@@ -691,8 +713,37 @@ function loadVideoLazily(video, index, slideIndex) {
         video.play().then(() => {
             const loadTime = performance.now() - startTime;
             window.mobileDebug(`✅ Desktop video ${index + 1} started after ${loadTime.toFixed(1)}ms`);
+            hasPlayedSuccessfully = true;
+            
+            // Show video with smooth transition
+            if (container) {
+                const loadingState = container.querySelector('.video-loading-state');
+                if (loadingState) {
+                    loadingState.classList.add('fade-out');
+                    setTimeout(() => loadingState.remove(), 300);
+                }
+                video.classList.remove('hidden');
+                setTimeout(() => video.classList.add('visible'), 50);
+            }
         }).catch(error => {
             window.mobileDebug(`⚠️ Desktop autoplay failed for video ${index + 1}: ${error.message}`);
+            
+            // Update loading state to show click-to-play
+            if (container) {
+                const loadingState = container.querySelector('.video-loading-state');
+                if (loadingState) {
+                    const loadingText = loadingState.querySelector('.loading-text');
+                    if (loadingText) {
+                        loadingText.textContent = 'Click to Play';
+                    }
+                    const spinner = loadingState.querySelector('.loading-spinner');
+                    if (spinner) {
+                        spinner.style.display = 'none';
+                    }
+                }
+                video.classList.remove('hidden');
+                setTimeout(() => video.classList.add('visible'), 50);
+            }
         });
     }
 }
@@ -714,23 +765,84 @@ function loadImageLazily(img, index, slideIndex) {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (isMobile) {
-        // Mobile: Super simple - just show the image
+        // Mobile: Show brief loading indicator for images
+        const container = img.closest('.sample-video-container');
+        
+        // Add loading indicator if it doesn't exist (only for images)
+        if (container && img.tagName.toLowerCase() === 'img' && !container.querySelector('.video-loading-state')) {
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'video-loading-state';
+            loadingIndicator.innerHTML = `
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading...</div>
+            `;
+            container.appendChild(loadingIndicator);
+            window.mobileDebug(`📊 Added loading indicator for mobile image ${index + 1}`);
+        }
+        
+        img.onload = () => {
+            const loadTime = performance.now() - startTime;
+            window.mobileDebug(`✅ Mobile image ${index + 1} loaded in ${loadTime.toFixed(1)}ms`);
+            
+            // Remove loading indicator
+            if (container) {
+                const loadingState = container.querySelector('.video-loading-state');
+                if (loadingState) {
+                    loadingState.style.opacity = '0';
+                    setTimeout(() => loadingState.remove(), 200);
+                }
+            }
+        };
+        
+        img.onerror = () => {
+            window.mobileDebug(`❌ Mobile image ${index + 1} failed to load`);
+            // Remove loading indicator even on error
+            if (container) {
+                const loadingState = container.querySelector('.video-loading-state');
+                if (loadingState) {
+                    loadingState.remove();
+                }
+            }
+        };
+        
         img.style.opacity = '1';
         if (img.getAttribute('data-src') && !img.src) {
             img.src = imgSrc;
             window.mobileDebug(`📱 Mobile image ${index + 1} source set`);
+        } else if (!img.complete) {
+            // Image src already set but not loaded yet, let onload handle it
+            window.mobileDebug(`⏳ Mobile image ${index + 1} loading...`);
+        } else {
+            // Image already loaded, trigger onload manually
+            img.onload();
         }
-        const loadTime = performance.now() - startTime;
-        window.mobileDebug(`✅ Mobile image ${index + 1} loaded in ${loadTime.toFixed(1)}ms`);
     } else {
-        // Desktop: Show image immediately
-        img.style.opacity = '1';
-        if (img.getAttribute('data-src') && !img.src) {
-            img.src = imgSrc;
-            window.mobileDebug(`🖥️ Desktop image ${index + 1} source set`);
-        }
-        const loadTime = performance.now() - startTime;
-        window.mobileDebug(`✅ Desktop image ${index + 1} loaded in ${loadTime.toFixed(1)}ms`);
+        // Desktop: Smooth fade-in for images
+        const container = img.closest('.sample-video-container');
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.3s ease';
+        
+        img.onload = () => {
+            const loadTime = performance.now() - startTime;
+            window.mobileDebug(`✅ Desktop image ${index + 1} loaded (${loadTime.toFixed(1)}ms)`);
+            
+            // Remove loading state
+            if (container) {
+                const loadingState = container.querySelector('.video-loading-state');
+                if (loadingState) {
+                    loadingState.classList.add('fade-out');
+                    setTimeout(() => loadingState.remove(), 300);
+                }
+            }
+            
+            setTimeout(() => {
+                img.style.opacity = '1';
+            }, 50);
+        };
+        img.onerror = () => {
+            window.mobileDebug(`❌ Desktop image ${index + 1} failed to load`);
+        };
+        img.src = imgSrc;
     }
 }
 

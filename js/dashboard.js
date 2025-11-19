@@ -210,10 +210,10 @@ function showSimplifiedDashboard() {
         billingSection.style.display = 'none';
     }
     
-    // Hide the sign-out button in page-hero (only show in simplified menu)
-    const pageHeroSignOut = document.querySelector('.page-hero .sign-out');
-    if (pageHeroSignOut) {
-        pageHeroSignOut.style.display = 'none';
+    // Hide the contact-us button in page-hero (only show in simplified menu)
+    const pageHeroContactUs = document.querySelector('.page-hero .contact-us');
+    if (pageHeroContactUs) {
+        pageHeroContactUs.style.display = 'none';
     }
     
     // Create simplified button menu
@@ -240,8 +240,8 @@ function showSimplifiedDashboard() {
                 <span class="btn-icon" style="display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="../assets/images/twc-icon-logo.jpg" alt="TWC" style="width: 36px; height: 36px; border-radius: 4px; filter: brightness(0) invert(1);"></span>
                 <span class="btn-text">View Website Samples</span>
             </a>
-            <a href="#" class="simplified-menu-btn logout-btn" onclick="logoutUser(); return false;">
-                <span class="btn-text">Sign Out</span>
+            <a href="#" class="simplified-menu-btn contact-btn" onclick="event.preventDefault(); window.contactModal?.show(); return false;">
+                <span class="btn-text">Contact Us</span>
             </a>
         `;
         

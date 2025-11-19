@@ -313,6 +313,20 @@ body {
     align-self: center;
 }
 
+.simplified-menu-btn.contact-btn {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+    width: auto;
+    justify-content: center;
+    align-self: center;
+}
+
+.simplified-menu-btn.contact-btn:active {
+    background-color: #333333;
+    border-color: #333333;
+}
+
 .simplified-menu-btn .btn-icon {
     font-size: 1.5rem;
     min-width: 24px;
