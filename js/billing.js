@@ -328,10 +328,9 @@ async function updatePaymentMethod(event) {
             stripe = Stripe(getStripePublishableKey());
         }
         
-        // Create modal HTML (hidden initially)
+        // Create modal HTML
         const modal = document.createElement('div');
         modal.className = 'payment-method-modal';
-        modal.style.opacity = '0';
         modal.innerHTML = `
             <div class="payment-method-modal-content">
                 <div class="payment-method-modal-header">
@@ -383,10 +382,6 @@ async function updatePaymentMethod(event) {
         await new Promise(resolve => {
             cardElement.on('ready', resolve);
         });
-        
-        // Show modal with fade-in animation
-        modal.style.transition = 'opacity 0.3s ease-in-out';
-        modal.style.opacity = '1';
         
         // Re-enable the button and restore text
         updateBtn.disabled = false;
