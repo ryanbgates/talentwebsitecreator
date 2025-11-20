@@ -34,18 +34,77 @@
         <main class="main-content">
             <section class="page-hero">
                 <div class="container">
-                    <div class="hero-buttons">
-                        <button class="hero-cta-button primary" onclick="scrollToSection('main-service')">
-                            <span class="button-title">Get Your Website</span>
-                            <span class="button-payment-breakdown">$99.99 down, $299.99 when satisfied</span>
-                        </button>
-                        
-                        <div class="button-divider">— OR —</div>
-                        
-                        <button class="hero-cta-button secondary" onclick="scrollToSection('additional-services')">
-                            <span class="button-title">Get Website + Website Management</span>
-                            <span class="button-subtitle">We host, manage, and update it for you</span>
-                        </button>
+                    <div class="hero-content">
+                        <h1 class="hero-title">How Billing Works</h1>
+                        <div class="billing-steps">
+                            <p class="billing-step">$99.99 today to start your website.</p>
+                            <p class="billing-step">We design and build your full site.</p>
+                            <p class="billing-step">You approve it.</p>
+                            <p class="billing-step">$299.99 is billed only after approval.</p>
+                            <p class="billing-step">Add optional monthly service for hosting + unlimited edits.</p>
+                        </div>
+                        <div class="hero-buttons-horizontal">
+                            <div class="button-wrapper">
+                                <span class="button-label"><strong>YOU</strong> host & manage</span>
+                                <button class="hero-cta-button primary" onclick="scrollToSection('main-service')">
+                                    <span class="button-title">One-Time Website Build</span>
+                                    <span class="button-payment-breakdown">$99 down today, then $299 once you approve the final site.</span>
+                                </button>
+                            </div>
+                            
+                            <span class="button-divider-inline">— OR —</span>
+                            
+                            <div class="button-wrapper">
+                                <span class="button-label"><strong>WE</strong> host & manage</span>
+                                <button class="hero-cta-button secondary" onclick="scrollToSection('additional-services')">
+                                    <span class="button-title">Website + Monthly Service</span>
+                                    <span class="button-subtitle">Includes your website + hosting + unlimited edits.</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Website Creation Section -->
+            <section class="main-service" id="main-service">
+                <div class="container">
+                    <div class="service-card main-card">
+                        <div class="service-header">
+                            <div class="service-title-wrapper">
+                                <img src="../assets/images/twc-icon-logo.jpg" alt="TWC Logo" class="service-icon">
+                                <h2>One-Time Website Build</h2>
+                                <div class="service-icon-spacer" aria-hidden="true"></div>
+                            </div>
+                            <div class="service-price-split">
+                                <div class="price-line">$99.99 deposit</div>
+                                <div class="price-subtext">The remaining <span class="price-emphasis">$299.99</span> is ONLY charged after you approve the final website —<br>we don't bill until you confirm you're 100% satisfied.</div>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <p class="service-description">Professional actor website built to industry standards — everything casting directors need to see in one place.</p>
+                            
+                            <div class="service-includes">
+                                <h4>Includes:</h4>
+                                <div class="main-includes-grid">
+                                    <ul class="main-includes-left">
+                                        <li>Custom domain setup assistance</li>
+                                        <li>Mobile-friendly responsive design</li>
+                                        <li>SEO optimization for your name</li>
+                                    </ul>
+                                    <ul class="main-includes-right">
+                                        <li>Social media integration</li>
+                                        <li>Headshots, credits, demo reel, bio, and contact form</li>
+                                        <li>Domain registration guidance (GoDaddy, Namecheap)</li>
+                                    </ul>
+                                </div>
+                                <ul class="main-includes-bottom">
+                                    <li>Access to our <span class="referral-link" onclick="navigateToAffiliate()">Referral Program</span> — start earning cash by referring other performers!</li>
+                                </ul>
+                            </div>
+
+                            <button class="cta-button primary" onclick="handleSecureWebsiteClick('website-build', event)">Secure Your Website Now!</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -53,13 +112,17 @@
             <!-- Additional Services Section -->
             <section class="additional-services" id="additional-services">
                 <div class="container">
+                    <p class="services-notice">⚠️ <span class="important-label">IMPORTANT:</span> These are optional add-ons to the required One-Time Website Build. Scroll up or <a href="#main-service" class="services-link" onclick="event.preventDefault(); scrollToSection('main-service');">click here</a> to see what's included in the build.</p>
                     <div class="services-grid">
                         <!-- Hosting Only -->
                         <div class="service-card">
                             <div class="service-header">
-                                <div class="service-prefix">Website +</div>
-                                <h2>☁︎ Server Hosting</h2>
-                                <div class="service-price">$9.99/month</div>
+                                <div class="service-prefix">$99.99 website build deposit</div>
+                                <div class="service-plus">+</div>
+                                <div class="service-price">
+                                    <h2>☁︎ Server Hosting</h2>
+                                    <span>$9.99/month</span>
+                                </div>
                             </div>
                             <div class="service-content">
                                 <p class="service-description">Keep your site online, secure, and fast with our managed hosting service.</p>
@@ -82,9 +145,12 @@
                         <!-- Updates Plan -->
                         <div class="service-card">
                             <div class="service-header">
-                                <div class="service-prefix">Website +</div>
-                                <h2>🛠︎ Unlimited Edits</h2>
-                                <div class="service-price">$9.99/month</div>
+                                <div class="service-prefix">$99.99 website build deposit</div>
+                                <div class="service-plus">+</div>
+                                <div class="service-price">
+                                    <h2>🛠︎ Unlimited Edits</h2>
+                                    <span>$9.99/month</span>
+                                </div>
                             </div>
                             <div class="service-content">
                                 <p class="service-description">Request changes to website info, roles, photos, demo reel, and more whenever you need them.</p>
@@ -108,9 +174,12 @@
                         <div class="service-card featured">
                             <div class="corner-ribbon"></div>
                             <div class="service-header">
-                                <div class="service-prefix">Website +</div>
-                                <h2>⭐ Complete Plan</h2>
-                                <div class="service-price">$14.99/month</div>
+                                <div class="service-prefix">$99.99 website build deposit</div>
+                                <div class="service-plus">+</div>
+                                <div class="service-price">
+                                    <h2>⭐ Complete Plan</h2>
+                                    <span>$14.99/month</span>
+                                </div>
                                 <h3>Hosting + Edits</h3>
                             </div>
                             <div class="service-content">
@@ -136,48 +205,6 @@
 
                                 <button class="cta-button secondary" onclick="handleSecureWebsiteClick('complete', event)">Secure Your Website Now!</button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Main Website Creation Section -->
-            <section class="main-service" id="main-service">
-                <div class="container">
-                    <div class="service-card main-card">
-                        <div class="service-header">
-                            <div class="service-title-wrapper">
-                                <img src="../assets/images/twc-icon-logo.jpg" alt="TWC Logo" class="service-icon">
-                                <h2>One-Time Website Build</h2>
-                                <div class="service-icon-spacer" aria-hidden="true"></div>
-                            </div>
-                            <div class="service-price-split">
-                                <div class="price-line">$99.99 down, $299.99 when satisfied</div>
-                            </div>
-                        </div>
-                        <div class="service-content">
-                            <p class="service-description">Get your personal actor website professionally designed and built to industry standards. Perfect for showcasing your headshots, reel, credits, and bio — all in one place.</p>
-                            
-                            <div class="service-includes">
-                                <h4>Includes:</h4>
-                                <div class="main-includes-grid">
-                                    <ul class="main-includes-left">
-                                        <li>Custom domain setup assistance</li>
-                                        <li>Mobile-friendly responsive design</li>
-                                        <li>SEO optimization for your name</li>
-                                    </ul>
-                                    <ul class="main-includes-right">
-                                        <li>Social media integration</li>
-                                        <li>Headshots, credits, demo reel, bio, and contact form</li>
-                                        <li>Domain registration guidance (GoDaddy, Namecheap)</li>
-                                    </ul>
-                                </div>
-                                <ul class="main-includes-bottom">
-                                    <li>Access to our <span class="referral-link" onclick="navigateToAffiliate()">Referral Program</span> — start earning cash by referring other performers!</li>
-                                </ul>
-                            </div>
-
-                            <button class="cta-button primary" onclick="handleSecureWebsiteClick('website-build', event)">Secure Your Website Now!</button>
                         </div>
                     </div>
                 </div>

@@ -132,6 +132,89 @@ body {
     padding: 60px 40px;
 }
 
+.hero-content {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+    line-height: 1.2;
+}
+
+.billing-steps {
+    margin-bottom: 40px;
+}
+
+.billing-step {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    line-height: 1.4;
+    position: relative;
+    display: inline-block;
+    width: auto;
+}
+
+.billing-step::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    right: -10px;
+    height: 1px;
+    background-color: var(--primary-color);
+}
+
+.billing-step:last-child::after {
+    display: block;
+}
+
+.billing-steps {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-buttons-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+}
+
+.button-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.button-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    letter-spacing: 0.5px;
+}
+
+.button-label strong {
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
 .hero-buttons {
     display: flex;
     flex-direction: column;
@@ -142,8 +225,9 @@ body {
 }
 
 .hero-cta-button {
-    width: 100%;
-    padding: 30px 40px;
+    flex: 1;
+    min-width: 0;
+    padding: 25px 30px;
     border-radius: 12px;
     border: 3px solid var(--primary-color);
     background-color: var(--secondary-color);
@@ -152,7 +236,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-family: 'Oswald', sans-serif;
 }
 
@@ -191,27 +275,28 @@ body {
 }
 
 .hero-cta-button.secondary .button-subtitle {
-    color: var(--text-secondary);
+    color: var(--primary-color);
+    font-weight: 600 !important;
 }
 
 .button-title {
-    font-size: 2rem;
+    font-size: 1.4rem;
     font-weight: 600;
     line-height: 1.2;
 }
 
 .button-payment-breakdown {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
     line-height: 1.4;
-    margin-top: 8px;
+    margin-top: 6px;
     opacity: 0.95;
 }
 
 .button-subtitle {
-    font-size: 1.1rem;
-    font-weight: 400;
+    font-size: 0.95rem;
+    font-weight: 600;
     font-family: 'Inter', sans-serif;
     line-height: 1.4;
 }
@@ -225,10 +310,20 @@ body {
     letter-spacing: 2px;
 }
 
+.button-divider-inline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
 /* Main Website Creation Section */
 .main-service {
     padding: 20px 0 20px 0;
-    background-color: var(--accent-color);
+    background-color: var(--secondary-color);
 }
 
 .main-card {
@@ -250,8 +345,34 @@ body {
 
 /* Additional Services Section */
 .additional-services {
-    padding: 5px 0 30px 0;
-    background-color: var(--secondary-color);
+    padding: 20px 0 30px 0;
+    background-color: var(--accent-color);
+}
+
+.services-notice {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.important-label {
+    font-weight: 700;
+    color: #dc2626;
+}
+
+.services-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.services-link:hover {
+    text-decoration: none;
 }
 
 .services-grid {
@@ -354,10 +475,21 @@ body {
 .service-prefix {
     font-family: 'Oswald', sans-serif;
     font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-secondary);
+    font-weight: 400;
+    color: #000;
     text-align: center;
-    margin-bottom: 4px;
+    margin-top: -8px;
+    margin-bottom: 0;
+    line-height: 1;
+}
+
+.service-plus {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #000;
+    text-align: center;
+    margin: 0;
+    line-height: 1;
 }
 
 .service-header h2 {
@@ -373,10 +505,10 @@ body {
 
 /* Add black box styling for main card title */
 .main-card .service-header h2 {
-    border: 2px solid var(--primary-color);
-    padding: 8px 16px;
+    border: none;
+    padding: 0;
     display: inline-block;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 /* Adjust Complete Plan title to center the text instead of the icon */
@@ -406,6 +538,18 @@ body {
     padding: 8px 16px;
     display: inline-block;
     border-radius: 4px;
+    text-align: center;
+}
+
+.service-price h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.6rem;
+    color: var(--primary-color);
+}
+
+.service-price span {
+    display: block;
+    font-size: 1.6rem;
 }
 
 .service-price-split {
@@ -429,12 +573,26 @@ body {
     margin-bottom: 6px;
 }
 
+.price-subtext {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--primary-color);
+    margin-top: 10px;
+    max-width: 100%;
+}
+
+.price-emphasis {
+    font-weight: 700;
+}
+
 .service-header h3 {
     font-family: 'Oswald', sans-serif;
     font-size: 1.3rem;
     font-weight: 500;
     color: var(--text-secondary);
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 
 .service-description {
