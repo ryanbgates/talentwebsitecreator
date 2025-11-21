@@ -284,10 +284,15 @@ class CheckoutModal {
             }
         }
         
-        // Set the total to final payment amount
+        // Set the total to final payment amount with discount display
         const totalPrice = document.getElementById('totalPrice');
         if (totalPrice) {
-            totalPrice.textContent = `$${finalAmount.toFixed(2)}`;
+            if (finalAmount === 199.99) {
+                // Show discounted total with strikethrough
+                totalPrice.innerHTML = '<span style="text-decoration: line-through; color: #999; font-size: 18px; display: block;">$299.99</span><span style="color: #00b894; font-weight: 700; font-size: 24px; display: block; margin-top: 4px;">$199.99</span>';
+            } else {
+                totalPrice.textContent = `$${finalAmount.toFixed(2)}`;
+            }
         }
         
         // Hide promo code section for final payment
